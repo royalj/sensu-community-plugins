@@ -1,19 +1,31 @@
-#!/usr/bin/env ruby
+#! /usr/bin/env ruby
 #
 # Count EC2 instances
-# ===
 #
 # DESCRIPTION:
-# This plugin retrives number of EC2 status
+#   This plugin retrives number of EC2 status
+#
+# OUTPUT:
+#   plain-text
 #
 # PLATFORMS:
-# all
+#   all
 #
 # DEPENDENCIES:
-# sensu-plugin, aws-sdk Ruby gem
+#   gem: sensu-plugin
+#   gem: aws-sdk
 #
-# Released under the same terms as Sensu (the MIT license); see LICENSE
-# for details.
+# #YELLOW
+# needs example command
+#
+# EXAMPLES:
+#
+# NOTES:
+#
+# LICENSE:
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/metric/cli'

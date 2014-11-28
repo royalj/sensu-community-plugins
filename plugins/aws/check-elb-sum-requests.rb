@@ -1,20 +1,34 @@
-#!/usr/bin/env ruby
+#! /usr/bin/env ruby
 #
 # Check ELB Sum Requests
-# ======================
 #
-# Check ELB Sum Requests by CloudWatch API.
 #
-# Examples
-# ----------------------
+# DESCRIPTION:
 #
+# OUTPUT:
+#   plain-text
+#
+# PLATFORMS:
+#   all
+#
+# DEPENDENCIES:
+#   gem: sensu-plugin
+#   gem: aws-sdk
+#
+#
+# EXAMPLES:
 #     # Warning if any load balancer's sum request count is over 1000, critical if over 2000.
 #     check-elb-sum-requests --warning-over 1000 --critical-over 2000
 #
 #     # Critical if "app" load balancer's sum request count is over 10000, within last one hour
 #     check-elb-sum-requests --elb-names app --critical-over 10000 --period 3600
 #
-# Copyright 2014 github.com/y13i
+# NOTES:
+#
+# LICENSE:
+#   Copyright 2014 github.com/y13i
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
 #
 
 require "sensu-plugin/check/cli"

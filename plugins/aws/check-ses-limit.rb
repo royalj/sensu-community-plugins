@@ -1,11 +1,41 @@
+#! /usr/bin/env ruby
+#
+#
+# DESCRIPTION:
+#   Checks how close you are getting in percentages to your 24 hour ses sending limit
+#   Gets your SES sending limit and issues a warn and critical based on percentages
+#   you supply for your daily sending limit
+#
+# OUTPUT:
+#   plain-text
+#
+# PLATFORMS:
+#   all
+#
+# DEPENDENCIES:
+#   gem: sensu-plugin
+#   gem: aws-sdk
+#
+# #YELLOW
+# needs example command
+#
+# EXAMPLES:
+#
+# NOTES:
+#
+# LICENSE:
+#   Copyright (c) 2014, Joel <jjshoe@gmail.com>
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
+
+
+
 #!/usr/bin/env ruby
 #
-# Checks how close you are getting in percentages to your 24 hour ses sending limit
 # ===
 #
 # DESCRIPTION:
-#   Gets your SES sending limit and issues a warn and critical based on percentages
-#   you supply for your daily sending limit
 #
 # PLATFORMS:
 #   all
@@ -14,7 +44,6 @@
 #   sensu-plugin >= 1.5 Ruby gem
 #   aws-sdk Ruby gem
 #
-# Copyright (c) 2014, Joel <jjshoe@gmail.com>
 #
 # Released under the same terms as Sensu (the MIT license); see LICENSE
 # for details.

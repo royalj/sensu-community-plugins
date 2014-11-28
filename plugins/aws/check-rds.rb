@@ -1,13 +1,22 @@
-#!/usr/bin/env ruby
+#! /usr/bin/env ruby
 #
 # Check RDS
-# ===========
 #
-# Check RDS instance statuses by RDS and CloudWatch API.
+# DESCRIPTION:
+#   Check RDS instance statuses by RDS and CloudWatch API.
 #
-# Examples
-# -----------
+# OUTPUT:
+#   plain-text
 #
+# PLATFORMS:
+#   all
+#
+# DEPENDENCIES:
+#   gem: sensu-plugin
+#   gem: aws-sdk
+#   gem: time
+#
+# EXAMPLES:
 #     # Critical if DB instance "sensu-admin-db" is not on ap-northeast-1a
 #     check-rds -i sensu-admin-db --availability-zone-critical ap-northeast-1a
 #
@@ -27,7 +36,12 @@
 #     # You can check multiple metrics simultaneously. Highest severity will be reported
 #     check-rds -i sensu-admin-db --cpu-warning-over 80 --cpu-critical-over 90 --memory-warning-over 60 --memory-critical-over 80
 #
-# Copyright 2014 github.com/y13i
+# NOTES:
+#
+# LICENSE:
+#   Copyright 2014 github.com/y13i
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
 #
 
 require "sensu-plugin/check/cli"

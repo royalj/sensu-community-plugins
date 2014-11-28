@@ -1,22 +1,35 @@
-#!/usr/bin/env ruby
+#! /usr/bin/env ruby
 #
-# ===
+# Apache metrics based on mod_status
+#
 #
 # DESCRIPTION:
 #   This plugin looks up all instances in an account and alerts if one or more have a scheduled
 #   event (reboot, retirement, etc)
 #
+# OUTPUT:
+#   Graphite plain-text format (name value timestamp\n)
+#
 # PLATFORMS:
 #   all
 #
 # DEPENDENCIES:
-#   sensu-plugin >= 1.5 Ruby gem
-#   aws-sdk Ruby gem
+#   gem: sensu-plugin
+#   gem: aws-sdk
 #
-# Copyright (c) 2014, Tim Smith, tim@cozy.co
+# #YELLOW
+# needs example command
 #
-# Released under the same terms as Sensu (the MIT license); see LICENSE
-# for details.
+# EXAMPLES:
+#
+# NOTES:
+#   enable extended mod_status
+#
+# LICENSE:
+#   Copyright (c) 2014, Tim Smith, tim@cozy.co
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/check/cli'

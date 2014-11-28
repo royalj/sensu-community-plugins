@@ -1,21 +1,35 @@
-#!/usr/bin/env ruby
+#! /usr/bin/env ruby
 #
 # Fetch Elasticache metrics from CloudWatch
-# ===
 #
-# Copyright 2014 Yann Verry
+# DESCRIPTION:
 #
-# Released under the same terms as Sensu (the MIT license); see LICENSE
-# for details.
+# OUTPUT:
+#   plain-text
 #
-# Gets metrics from CloudWatch and puts them in Graphite
+# PLATFORMS:
+#   all
 #
-# Needs aws-sdk gem
+# DEPENDENCIES:
+#   gem: sensu-plugin
+#   gem: aws-sdk
 #
-# Redis: http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/CacheMetrics.Redis.html
-# Memcached: http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/CacheMetrics.Memcached.html
+# #YELLOW
+# needs example command
 #
-# By default fetches all available statistics from one minute ago.  You may need to fetch further back than this;
+# EXAMPLES:
+#
+# NOTES:
+#   Gets metrics from CloudWatch and puts them in Graphite
+#   Redis: http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/CacheMetrics.Redis.html
+#   Memcached: http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/CacheMetrics.Memcached.html
+#   By default fetches all available statistics from one minute ago.  You may need to fetch further back than this;
+#
+# LICENSE:
+#   Copyright 2014 Yann Verry
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/metric/cli'

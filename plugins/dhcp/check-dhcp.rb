@@ -1,7 +1,22 @@
 #! /usr/bin/env ruby
+#  This plugin checks DHCP server responses.
+#  It must run as root to be able to bind to a listening port (udp 67 or 68)
+#  By default it will simply check for a response to a discover broadcast
+#  that is a valid DHCP::Message, ignoring contents.
 #
+# Author::    Matthew Richardson  (m.richardson@ed.ac.uk)
+# Copyright:: Copyright (c) 2002 The Pragmatic Programmers, LLC
+# License::   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+
+# This class holds the letters in the original
+# word or phrase. The is_anagram? method allows us
+# to test if subsequent words or phrases are
+# anagrams of the original.
+
 #
 # DESCRIPTION:
+
 #
 # OUTPUT:
 #   plain-text
@@ -11,49 +26,25 @@
 #
 # DEPENDENCIES:
 #   gem: sensu-plugin
+#   gem: net-dhcp
+#   gem: ipaddr
+#   gem: socket
 #
 # #YELLOW
 # needs usage
-#
 # USAGE:
 #
 # NOTES:
-#
-# LICENSE:
-#   Released under the same terms as Sensu (the MIT license); see LICENSE
-#   for details.
-#
-
-#!/usr/bin/env ruby
-#
-# Checks DHCP servers
-# ===
-#
-# DESCRIPTION:
-#   This plugin checks DHCP server responses.
-#   It must run as root to be able to bind to a listening port (udp 67 or 68)
-#   By default it will simply check for a response to a discover broadcast
-#   that is a valid DHCP::Message, ignoring contents.
-#
 #   If 'server' is specified, the check pretends to be a DHCP relay-agent, and
 #   does a unicast request against a specific DHCP server.
 #
 #   The 'offer' or 'ipaddr' options can be used to test that the response
 #   is an offer (of any address), or of a specific address.
 #
-# OUTPUT:
-#   plain-text
+# LICENSE:
 #
-# PLATFORMS:
-#   linux
 #
-# DEPENDENCIES:
-#   net-dhcp ipaddr socket sensu-plugin Ruby gem
 #
-# Author: Matthew Richardson <m.richardson@ed.ac.uk>
-#
-# Released under the same terms as Sensu (the MIT license); see LICENSE
-# for details.
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/check/cli'

@@ -143,7 +143,7 @@ class PerconaCluster2Graphite < Sensu::Plugin::Metric::CLI::Graphite
       # special handling for wsrep_evs_repl_latency as this contains forward slash delimited data
       fix_and_output_evs_repl_latency_data(row) if row["Variable_name"] == "wsrep_evs_repl_latency"
       metrics.each do |category, var_mapping|
-        if var_mapping.has_key?(row["Variable_name"])
+        if var_mapping.key?(row["Variable_name"])
           output "#{config[:scheme]}.mysql.#{category}.#{var_mapping[row["Variable_name"]]}", row["Value"]
         end
       end

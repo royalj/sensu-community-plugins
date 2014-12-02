@@ -117,7 +117,7 @@ class CheckSilenced < Sensu::Plugin::Metric::CLI::Graphite
     @count = 0
     if stashes.count > 0
       stashes.each do |stash|
-        if stash['content'].has_key?('expires') && now - stash['content']['expires'] > 0
+        if stash['content'].key?('expires') && now - stash['content']['expires'] > 0
           delete_stash(stash) unless config[:noop]
           @count += 1
         end

@@ -150,7 +150,7 @@ class Ec2Node < Sensu::Handler
   end
 
   def get_valid_states
-    if @event['client'].has_key?('ec2_states')
+    if @event['client'].key?('ec2_states')
       return @event['client']['ec2_states']
     else
       return ['running']

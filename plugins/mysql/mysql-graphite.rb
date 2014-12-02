@@ -248,7 +248,7 @@ class Mysql2Graphite < Sensu::Plugin::Metric::CLI::Graphite
 
       results.each do |row|
         metrics.each do |category, var_mapping|
-          if var_mapping.has_key?(row["Variable_name"])
+          if var_mapping.key?(row["Variable_name"])
             output "#{config[:scheme]}.#{mysql_shorthostname}.#{category}.#{var_mapping[row["Variable_name"]]}", row["Value"]
           end
         end

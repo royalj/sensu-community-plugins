@@ -36,7 +36,7 @@ class GeckoboardPush < Sensu::Handler
 
     metrics.split(/\n/).each do |m|
       v = m.split(/\t/)
-      if checks.has_key?(v[0])
+      if checks.key?(v[0])
         c = settings["geckoboard"]["checks"][v[0]]
         wk = c["widget_key"]
 

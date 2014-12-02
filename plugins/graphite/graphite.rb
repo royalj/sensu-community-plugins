@@ -158,7 +158,7 @@ class Graphite < Sensu::Plugin::Check::CLI
   end
 
   def graphite_cache(target = nil)
-    if @graphite_cache.has_key?(target)
+    if @graphite_cache.key?(target)
       graphite_value = @graphite_cache[target].find_all {|value| value[:period] == @period}
       graphite_value if graphite_value.size > 0
     end
@@ -334,7 +334,7 @@ class Graphite < Sensu::Plugin::Check::CLI
       last_value = last_values[target]
       percent = last_value / avg_value unless last_value.nil? || avg_value.nil?
       ['fatal', 'error', 'warning'].each do |type|
-        next unless max_values.has_key?(type)
+        next unless max_values.key?(type)
         max_value = max_values[type]
         var1 = config[:greater_than] ? percent : max_value.to_f
         var2 = config[:greater_than] ? max_value.to_f : percent
@@ -369,7 +369,7 @@ class Graphite < Sensu::Plugin::Check::CLI
       values_array = values_pair.find_all{|v| v.first}.map {|v| v.first if v.first != nil}
       avg_value = values_array.inject{ |sum, el| sum + el if el }.to_f / values_array.size
       ['fatal', 'error', 'warning'].each do |type|
-        next unless max_values.has_key?(type)
+        next unless max_values.key?(type)
         max_value = max_values[type]
         var1 = config[:greater_than] ? avg_value : max_value.to_f
         var2 = config[:greater_than] ? max_value.to_f : avg_value
@@ -407,7 +407,7 @@ class Graphite < Sensu::Plugin::Check::CLI
       last_value = last_values[target]
       percent = last_value / percentile_value unless last_value.nil? || percentile_value.nil?
       ['fatal', 'error', 'warning'].each do |type|
-        next unless max_values.has_key?(type)
+        next unless max_values.key?(type)
         max_value = max_values[type]
         var1 = config[:greater_than] ? percent : max_value.to_f
         var2 = config[:greater_than] ? max_value.to_f : percent
@@ -441,7 +441,7 @@ class Graphite < Sensu::Plugin::Check::CLI
       last_value = last.first
       unless last_value.nil?
         ['fatal', 'error', 'warning'].each do |type|
-          next unless max_values.has_key?(type)
+          next unless max_values.key?(type)
           max_value = max_values[type]
           var1 = config[:greater_than] ? last_value : max_value.to_f
           var2 = config[:greater_than] ? max_value.to_f : last_value

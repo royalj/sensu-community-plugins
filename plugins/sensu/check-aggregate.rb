@@ -179,7 +179,7 @@ class CheckAggregate < Sensu::Plugin::Check::CLI
         unless matched.nil?
           key = matched[1]
           value = matched[2..-1]
-          if mappings.has_key?(key)
+          if mappings.key?(key)
             unless mappings[key] == value
               critical message + " (#{key})"
             end

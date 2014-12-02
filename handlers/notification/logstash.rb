@@ -51,7 +51,7 @@ class LogstashHandler < Sensu::Handler
       :occurrences   => @event['occurrences'],
       :action        => @event['action']
     }
-    logstash_msg[:type] = settings['logstash']['type'] if settings['logstash'].has_key?('type')
+    logstash_msg[:type] = settings['logstash']['type'] if settings['logstash'].key?('type')
 
     case settings['logstash']['output']
     when 'redis'

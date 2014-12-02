@@ -139,7 +139,7 @@ module Sensu::Extension
 
     # Has this check been disabled from handlers?
     def filter_disabled(event)
-      if event[:check].has_key?(:alert)
+      if event[:check].key?(:alert)
         if event[:check][:alert] == false
           bail 'alert disabled', event
         end
@@ -196,7 +196,7 @@ module Sensu::Extension
 
     # Does this event have dependencies?
     def filter_dependencies(event)
-      if event[:check].has_key?(:dependencies) && event[:check][:dependencies].is_a?(Array)
+      if event[:check].key?(:dependencies) && event[:check][:dependencies].is_a?(Array)
           event[:check][:dependencies].each do |dependency|
             begin
               timeout(2) do

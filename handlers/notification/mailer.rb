@@ -59,9 +59,9 @@ class Mailer < Sensu::Handler
   def build_mail_to_list
     json_config = config[:json_config] || 'mailer'
     mail_to = settings[json_config]['mail_to']
-    if settings[json_config].has_key?('subscriptions')
+    if settings[json_config].key?('subscriptions')
       @event['check']['subscribers'].each do |sub|
-        if settings[json_config]['subscriptions'].has_key?(sub)
+        if settings[json_config]['subscriptions'].key?(sub)
           mail_to << ", #{settings[json_config]['subscriptions'][sub]['mail_to']}"
         end
       end

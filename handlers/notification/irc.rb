@@ -44,13 +44,13 @@ class IRC < Sensu::Handler
       :ssl => settings["irc"]["irc_ssl"],
       :join => true,
     }
-    if settings["irc"].has_key?("irc_password")
+    if settings["irc"].key?("irc_password")
       params[:channel_password] = settings["irc"]["irc_password"]
     end
 
-    if settings["irc"].has_key?("nickserv_command")
+    if settings["irc"].key?("nickserv_command")
       params[:nickserv_command] = settings["irc"]["nickserv_command"]
-    elsif settings["irc"].has_key?("nickserv_password")
+    elsif settings["irc"].key?("nickserv_password")
       params[:nickserv_password] = settings["irc"]["nickserv_password"]
     end
 

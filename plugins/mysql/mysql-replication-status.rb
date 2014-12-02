@@ -116,7 +116,7 @@ class CheckMysqlReplicationStatus < Sensu::Plugin::Check::CLI
               'Last_IO_Error',
               'Last_SQL_Error',
               'Seconds_Behind_Master'].all? do |key|
-                row.has_key? key
+                row.key? key
               end
 
           slave_running = %w[Slave_IO_Running Slave_SQL_Running].all? do |key|

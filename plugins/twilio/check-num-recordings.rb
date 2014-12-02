@@ -7,7 +7,7 @@
 #   plain-text
 #
 # PLATFORMS:
-#   all
+#   Linux
 #
 # DEPENDENCIES:
 #   gem: sensu-plugin
@@ -33,7 +33,7 @@
 #   This plugin checks the number of recordings in a twilio account.
 #
 # PLATFORMS:
-#   all
+#   Linux
 #
 # DEPENDENCIES:
 #   sensu-plugin >= 1.5 Ruby gem

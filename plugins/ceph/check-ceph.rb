@@ -1,39 +1,9 @@
 #! /usr/bin/env ruby
 #
+# Check the health status of a ceph cluster
 #
 # DESCRIPTION:
-#
-# OUTPUT:
-#   plain-text
-#
-# PLATFORMS:
-#   all
-#
-# DEPENDENCIES:
-#   gem: sensu-plugin
-#
-# #YELLOW
-# needs usage
-#
-# USAGE:
-#
-# NOTES:
-#
-# LICENSE:
-#   Released under the same terms as Sensu (the MIT license); see LICENSE
-#   for details.
-#
-
-
-#!/usr/bin/env ruby
-#
-# Check the health status of a ceph cluster
-# ===
-#
-# Dependencies:
-#   - ceph client
-#
-# Runs 'ceph health' command(s) to report health status of ceph
+#   Runs 'ceph health' command(s) to report health status of ceph
 # cluster. May need read access to ceph keyring and/or root access
 # for authentication.
 #
@@ -45,10 +15,28 @@
 # verboseness during warning/error reports, however they may add
 # additional insights to cluster-related problems during notification.
 #
-# Copyright 2013 Brian Clark <brian.clark@cloudapt.com>
+# OUTPUT:
+#   plain-text
 #
-# Released under the same terms as Sensu (the MIT license); see LICENSE
-# for details.
+# PLATFORMS:
+#   Linux
+#
+# DEPENDENCIES:
+#   gem: sensu-plugin
+#   ceph client
+#
+# #YELLOW
+# needs usage
+#
+# USAGE:
+#
+# NOTES:
+#
+# LICENSE:
+# Copyright 2013 Brian Clark <brian.clark@cloudapt.com>
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/check/cli'
@@ -58,55 +46,61 @@ class CheckCephHealth < Sensu::Plugin::Check::CLI
 
   option :keyring,
          :description => 'Path to cephx authentication keyring file',
-         :short => '-k KEY',
-         :long => '--keyring',
-         :proc => proc { |k| " -k #{k}" }
+         :short       => '-k KEY',
+         :long        => '--keyring',
+         :proc        => proc { |k| " -k #{k}" }
 
   option :monitor,
          :description => 'Optional monitor IP',
-         :short => '-m MON',
-         :long => '--monitor',
-         :proc => proc { |m| " -m #{m}" }
+         :short       => '-m MON',
+         :long        => '--monitor',
+         :proc        => proc { |m| " -m #{m}" }
 
   option :cluster,
          :description => 'Optional cluster name',
-         :short => '-c NAME',
-         :long => '--cluster',
-         :proc => proc { |c| " --cluster=#{c}" }
+         :short       => '-c NAME',
+         :long        => '--cluster',
+         :proc        => proc { |c| " --cluster=#{c}" }
 
   option :timeout,
          :description => 'Timeout (default 10)',
-         :short => '-t SEC',
-         :long => '--timeout',
-         :proc => proc { |t| t.to_i },
-         :default => 10
+         :short       => '-t SEC',
+         :long        => '--timeout',
+         # #YELLOW
+         # don't use blocks (rubocop error)
+         :proc        => proc { |t| t.to_i },
+         :default     => 10
 
   option :ignore_flags,
          :description => 'Optional ceph warning flags to ignore',
-         :short => '-i FLAG[,FLAG]',
-         :long => '--ignore-flags',
-         :proc => proc { |f| f.split(',') }
+         :short       => '-i FLAG[,FLAG]',
+         :long        => '--ignore-flags',
+         :proc        => proc { |f| f.split(',') }
 
   option :show_detail,
          :description => 'Show ceph health detail on warns/errors (verbose!)',
-         :short => '-d',
-         :long => '--detailed',
-         :boolean => true,
-         :default => false
+         :short       => '-d',
+         :long        => '--detailed',
+         :boolean     => true,
+         :default     => false
 
   option :osd_tree,
          :description => 'Show OSD tree on warns/errors (verbose!)',
-         :short => '-o',
-         :long => '--osd-tree',
-         :boolean => true,
-         :default => false
+         :short       => '-o',
+         :long        => '--osd-tree',
+         :boolean     => true,
+         :default     => false
 
+  # #ORANGE
+  # complexity to high (rubocop error)
   def run_cmd(cmd)
     pipe, status = nil
     begin
       cmd += config[:cluster] if config[:cluster]
       cmd += config[:keyring] if config[:keyring]
       cmd += config[:monitor] if config[:monitor]
+      # #YELLOW
+      # set to single quotes if possible
       cmd += " 2>&1"
       Timeout.timeout(config[:timeout]) do
         pipe = IO.popen(cmd)
@@ -120,9 +114,9 @@ class CheckCephHealth < Sensu::Plugin::Check::CLI
       rescue Errno::ESRCH, Errno::EPERM
         # Catch errors from trying to kill the timed-out process
         # We must do something here to stop travis complaining
-        critical "Execution timed out"
+        critical 'Execution timed out'
       ensure
-        critical "Execution timed out"
+        critical 'Execution timed out'
       end
     end
     output = pipe.read
@@ -146,6 +140,8 @@ class CheckCephHealth < Sensu::Plugin::Check::CLI
     end
   end
 
+  # #YELLOW
+  # complexity to high
   def run
     result = run_cmd('ceph health')
     unless result.start_with?('HEALTH_OK')

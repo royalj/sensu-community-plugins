@@ -15,7 +15,7 @@
 #   reverse order for better graphite tree view
 #
 # PLATFORM:
-#   all
+#   Linux
 #
 # DEPENDENCIES:
 #

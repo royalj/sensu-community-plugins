@@ -11,7 +11,7 @@
 #   plaint-text
 #
 # PLATFORMS:
-#   all
+#   Linux
 #
 # DEPENDENCIES:
 #   gem: github-api

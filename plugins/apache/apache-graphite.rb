@@ -11,7 +11,7 @@
 #   Graphite plain-text format (name value timestamp\n)
 #
 # PLATFORMS:
-#   all
+#   Linux
 #
 # DEPENDENCIES:
 #   gem: sensu-plugin

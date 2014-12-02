@@ -7,7 +7,7 @@
 #   plain-text
 #
 # PLATFORMS:
-#   all
+#   Linux
 #
 # DEPENDENCIES:
 #   gem: sensu-plugin
@@ -33,7 +33,7 @@
 #   This plugin pulls stats out of an etcd node
 #
 # PLATFORMS:
-#   all
+#   Linux
 #
 # OUTPUT:
 #   plain-text

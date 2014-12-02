@@ -12,7 +12,7 @@
 #   mutated JSON event
 #
 # PLATFORM:
-#   all
+#   Linux
 #
 # DEPENDENCIES:
 #

@@ -20,7 +20,7 @@
 #   Graphite plain-text format (name value timestamp\n)
 #
 # PLATFORMS:
-#   all
+#   Linux
 #
 # DEPENDENCIES:
 #   gem: sensu-plugin
@@ -41,7 +41,7 @@
 #      host.cassandra.threadpool.ReadStage.pending  0 1344547246
 #      ...
 #
-#   All metrics, including keyspaces and column families
+#   Linux metrics, including keyspaces and column families
 #   ----------------------------------------------------
 #
 #     $ ./cassandra-metrics.rb --cfstats

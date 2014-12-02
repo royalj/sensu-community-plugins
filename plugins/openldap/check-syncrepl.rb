@@ -7,7 +7,7 @@
 #   plain-text
 #
 # PLATFORMS:
-#   all
+#   Linux
 #
 # DEPENDENCIES:
 #   gem: sensu-plugin
@@ -34,7 +34,7 @@
 #   This currently only works with TLS and binding as a user
 #
 # PLATFORMS:
-#   all
+#   Linux
 #
 # DEPENDENCIES:
 #   sensu-plugin >= 1.5 Ruby gem

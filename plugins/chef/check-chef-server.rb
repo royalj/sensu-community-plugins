@@ -1,16 +1,21 @@
 #! /usr/bin/env ruby
 #
+# Check for chef-server health using chef-server-ctl
 #
 # DESCRIPTION:
-#
+#   This plugin uses Chef Servers's `chef-server-ctl` to check to see if
+#   any component of the chef server is not running.  This plugin needs
+#   to be run with elevated privileges (sudo) or it will fail with unknown
+#   state.
 # OUTPUT:
 #   plain-text
 #
 # PLATFORMS:
-#   all
+#   Linux
 #
 # DEPENDENCIES:
 #   gem: sensu-plugin
+#   Chef Server
 #
 # #YELLOW
 # needs usage
@@ -20,35 +25,9 @@
 # NOTES:
 #
 # LICENSE:
+#   Tim Smith tim@cozy.co
 #   Released under the same terms as Sensu (the MIT license); see LICENSE
 #   for details.
-#
-
-
-#!/usr/bin/env ruby
-#
-# Check for chef-server health using chef-server-ctl
-# ===
-#
-# DESCRIPTION:
-#   This plugin uses Chef Servers's `chef-server-ctl` to check to see if
-#   any component of the chef server is not running.  This plugin needs
-#   to be run with elevated privileges (sudo) or it will fail with unknown
-#   state.
-#
-# DEPENDENCIES:
-#   sensu-plugin Ruby gem
-#   Chef server
-#
-# OUTPUT:
-#   Plain-text.
-#   Returns CRITICAL if any of the chef-server processes are in a 'fail' or 'down' state
-#
-# AUTHORS:
-#   Tim Smith tim@cozy.co
-#
-# Released under the same terms as Sensu (the MIT license); see LICENSE
-# for details.
 #
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
@@ -68,7 +47,7 @@ class CheckChefServer < Sensu::Plugin::Check::CLI
         end
       end
       if failed_processes.count > 0
-        critical("chef-server service(s): #{failed_processes.join(', ')} #{failed_processes.count == 1 ? "is" : "are"} failed, down, or in warning state")
+        critical("chef-server service(s): #{failed_processes.join(', ')} #{failed_processes.count == 1 ? 'is' : 'are'} failed, down, or in warning state")
       else
         ok
       end

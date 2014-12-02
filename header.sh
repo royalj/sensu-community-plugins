@@ -13,9 +13,9 @@
 #   gem: sensu-plugin
 #
 # #YELLOW
-# needs example command
+# needs usage
 #
-# EXAMPLES:
+# USAGE:
 #
 # NOTES:
 #

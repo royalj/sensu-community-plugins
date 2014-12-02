@@ -16,7 +16,7 @@
 #   gem: fog
 #   gem: sensu-plugin
 #
-# EXAMPLES:
+# USAGE:
 #  ./check-ec2-network.rb -r ${you_region} -i ${your_instance_id} --warning-over 1000000 --critical-over 1500000
 #  ./check-ec2-network.rb -r ${you_region} -i ${your_instance_id} -d NetworkIn --warning-over 1000000 --critical-over 1500000
 #  ./check-ec2-network.rb -r ${you_region} -i ${your_instance_id} -d NetworkOut --warning-over 1000000 --critical-over 1500000
@@ -54,7 +54,7 @@ class ELBHealth < Sensu::Plugin::Check::CLI
   option :aws_region,
          :short       => '-r AWS_REGION',
          :long        => '--aws-region REGION',
-         :description => "AWS Region (such as eu-west-1). If you do not specify a region, it will be detected by the server the script is run on"
+         :description => 'AWS Region (such as eu-west-1). If you do not specify a region, it will be detected by the server the script is run on'
 
   option :elb_name,
          :short       => '-n ELB_NAME',
@@ -86,6 +86,8 @@ class ELBHealth < Sensu::Plugin::Check::CLI
     end
   end
 
+  # #ORANGE
+  # complexity to high (rubocop error)
   def run
     begin
       aws_region = (config[:aws_region].nil? || config[:aws_region].empty?) ? query_instance_region : config[:aws_region]
@@ -102,7 +104,7 @@ class ELBHealth < Sensu::Plugin::Check::CLI
       end
       unless unhealthy_instances.empty?
         if config[:verbose]
-          critical "Unhealthy instances detected: #{unhealthy_instances.map{ |id, state| '[' + id + '::' + state + ']' }.join(' ') }"
+          critical "Unhealthy instances detected: #{unhealthy_instances.map { |id, state| '[' + id + '::' + state + ']' }.join(' ') }"
         else
           critical "Detected [#{unhealthy_instances.size}] unhealthy instances"
         end

@@ -17,7 +17,7 @@
 #   gem: time
 #   gem: sensu-plugin
 #
-# EXAMPLES:
+# USAGE:
 #   Warning if any table's consumed read/write capacity is over 80%, critical if over 90%
 #   check-dynamodb-capacity --warning-over 80 --critical-over 90
 #
@@ -70,6 +70,7 @@ class CheckDynamoDB < Sensu::Plugin::Check::CLI
          long:        '--period SECONDS',
          default:     60,
          # #YELLOW
+         # dont use block (rubocop error)
          proc:        proc { |a| a.to_i },
          description: 'CloudWatch metric statistics period'
 
@@ -91,6 +92,7 @@ class CheckDynamoDB < Sensu::Plugin::Check::CLI
     option :"#{severity}_over",
            long:        "--#{severity}-over N",
            # #YELLOW
+           # dont use block (rubocop error)
            proc:        proc { |a| a.to_f },
            description: "Trigger a #{severity} if consumed capacity is over a percentage"
   end

@@ -15,7 +15,7 @@ LineLength:
 
 # added MJ
 AlignParameters:
-  Enabled: false
+  Enabled: true
 
 SpaceAroundOperators:
   Enabled: false
@@ -51,7 +51,7 @@ AccessorMethodName:
 
 # added MJ
 NilComparison:
-  Enabled: false
+  Enabled: true
 
 WhileUntilDo:
   Enabled: false
@@ -67,7 +67,7 @@ RedundantBegin:
 
 # added MJ
 VariableName:
-  Enabled: false
+  Enabled: true
 
 MethodName:
   Enabled: false
@@ -89,7 +89,7 @@ DotPosition:
 
 # added MJ
 AlignArray:
-  Enabled: false
+  Enabled: true
 
 ConditionPosition:
   Enabled: false
@@ -111,7 +111,7 @@ HashSyntax:
 
 # Single Quotes
 StringLiterals:
-  Enabled: false
+  Enabled: true
 
 UnlessElse:
   Enabled: false
@@ -163,7 +163,7 @@ EmptyLinesAroundBody:
 
 # added MJ
 IndentationWidth:
-  Enabled: false
+  Enabled: true
 
 # That would be nice to have - check for long methods
 CyclomaticComplexity:
@@ -174,7 +174,7 @@ Documentation:
 
 # added MJ
 AlignHash:
-  Enabled: false
+  Enabled: true
 
 SpaceAroundBlockBraces:
   Enabled: false

@@ -1,3 +1,29 @@
+#! /usr/bin/env ruby
+#
+#
+# DESCRIPTION:
+#
+# OUTPUT:
+#   plain-text
+#
+# PLATFORMS:
+#   all
+#
+# DEPENDENCIES:
+#   gem: sensu-plugin
+#
+# #YELLOW
+# needs usage
+#
+# USAGE:
+#
+# NOTES:
+#
+# LICENSE:
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
+
 #!/usr/bin/env ruby
 #
 # Checks that a given Docker container is running
@@ -6,7 +32,7 @@
 # This is a simple check script for Sensu to check that a Docker container is
 # running. You can pass in either a container id or a container name.
 #
-# EXAMPLES:
+# USAGE:
 #
 #   check-docker-container.rb c92d402a5d14
 #     CheckDockerContainer OK

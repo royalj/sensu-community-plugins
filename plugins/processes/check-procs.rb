@@ -1,3 +1,29 @@
+#! /usr/bin/env ruby
+#
+#
+# DESCRIPTION:
+#
+# OUTPUT:
+#   plain-text
+#
+# PLATFORMS:
+#   all
+#
+# DEPENDENCIES:
+#   gem: sensu-plugin
+#
+# #YELLOW
+# needs usage
+#
+# USAGE:
+#
+# NOTES:
+#
+# LICENSE:
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
+
 #!/usr/bin/env ruby
 #
 # Check Procs
@@ -12,7 +38,7 @@
 # Attempts to work on Cygwin (where ps does not have the features we
 # need) by calling Windows' tasklist.exe, but this is not well tested.
 #
-# Examples:
+# USAGE:
 #
 #   # chef-client is running
 #   check-procs -p chef-client -W 1

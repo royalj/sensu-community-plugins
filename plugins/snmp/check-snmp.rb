@@ -1,3 +1,30 @@
+#! /usr/bin/env ruby
+#
+#
+# DESCRIPTION:
+#
+# OUTPUT:
+#   plain-text
+#
+# PLATFORMS:
+#   all
+#
+# DEPENDENCIES:
+#   gem: sensu-plugin
+#
+# #YELLOW
+# needs usage
+#
+# USAGE:
+#
+# NOTES:
+#
+# LICENSE:
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
+
+
 #!/usr/bin/env ruby
 # Check SNMP
 # ===
@@ -8,7 +35,7 @@
 #
 # Requires SNMP gem
 #
-# Examples:
+# USAGE:
 #
 #   check-snmp -h host -C community -O oid -w warning -c critical
 #   check-snmp -h host -C community -O oid -m "(P|p)attern to match\.?"

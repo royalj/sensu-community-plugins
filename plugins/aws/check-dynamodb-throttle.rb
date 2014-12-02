@@ -17,7 +17,7 @@
 #   gem: time
 #   gem: sensu-plugin
 #
-# EXAMPLES:
+# USAGE:
 #     # Critical if session table's read throttle is over 50 for the last 5 minutes
 #     check-dynamodb-throttle --table_names session --throttle-for read --critical-over 50 --statistics sum --period 300
 #
@@ -66,6 +66,7 @@ class CheckDynamoDB < Sensu::Plugin::Check::CLI
          long:        '--period SECONDS',
          default:     60,
          # #YELLOW
+         # dont use block (rubocop error)
          proc:        proc { |a| a.to_i },
          description: 'CloudWatch metric statistics period'
 
@@ -87,6 +88,7 @@ class CheckDynamoDB < Sensu::Plugin::Check::CLI
     option :"#{severity}_over",
            long:        "--#{severity}-over N",
            # #YELLOW
+           # dont use block (rubocop error)
            proc:        proc { |a| a.to_f },
            description: "Trigger a #{severity} if throttle is over the given number"
   end

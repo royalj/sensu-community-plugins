@@ -1,5 +1,31 @@
 #! /usr/bin/env ruby
 #
+#
+# DESCRIPTION:
+#
+# OUTPUT:
+#   plain-text
+#
+# PLATFORMS:
+#   all
+#
+# DEPENDENCIES:
+#   gem: sensu-plugin
+#
+# #YELLOW
+# needs usage
+#
+# USAGE:
+#
+# NOTES:
+#
+# LICENSE:
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
+
+#! /usr/bin/env ruby
+#
 # Check Filesystem Writability Plugin
 # ===
 #
@@ -16,7 +42,7 @@
 #   gem: sensu-plugin
 #   gem: tempfile
 #
-# EXAMPLES:
+# USAGE:
 #   ./check-fs-writable.rb --auto  (check all volgroups in fstab)
 #   ./check-fs-writable.rb --dir /,/var,/usr,/home  (check a defined list of directories)
 #

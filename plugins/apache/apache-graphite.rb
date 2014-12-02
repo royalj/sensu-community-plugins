@@ -18,9 +18,9 @@
 #   Apache module: mod_status
 #
 # #YELLOW
-# needs example command
+# needs usage
 #
-# EXAMPLES:
+# USAGE:
 #
 # NOTES:
 #   enable extended mod_status
@@ -83,6 +83,7 @@ class ApacheMetrics < Sensu::Plugin::Metric::CLI::Graphite
     end
     req = Net::HTTP::Get.new(config[:path])
     # #YELLOW
+    # non-nil checks are not needed
     if config[:user] != nil && config[:password] != nil
       req.basic_auth config[:user], config[:password]
     end

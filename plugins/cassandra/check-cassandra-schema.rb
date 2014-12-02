@@ -1,21 +1,35 @@
-#!/usr/bin/env ruby
+#! /usr/bin/env ruby
 #
 # Check for Cassandra Schema Disagreement
-# ===
 #
 # DESCRIPTION:
+#
 #   This plugin uses Apache Cassandra's `nodetool` to check to see
 #   if any node in the cluster has run into a schema disagreement problem
 #
 #   See http://www.datastax.com/documentation/cassandra/2.0/cassandra/dml/dml_handle_schema_disagree_t.html
 #   for more details
 #
+# OUTPUT:
+#   plain-text
+#
+# PLATFORMS:
+#   all
+#
 # DEPENDENCIES:
-#   sensu-plugin Ruby gem
+#   gem: sensu-plugin
 #   Cassandra's nodetool
 #
-# Released under the same terms as Sensu (the MIT license); see LICENSE
-# for details.
+# #YELLOW
+# needs usage
+#
+# USAGE:
+#
+# NOTES:
+#
+# LICENSE:
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
 #
 # rubocop:disable AssignmentInCondition
 
@@ -25,16 +39,16 @@ require 'sensu-plugin/check/cli'
 class CheckCassandraSchema < Sensu::Plugin::Check::CLI
 
   option :hostname,
-    :short => "-h HOSTNAME",
-    :long => "--host HOSTNAME",
-    :description => "cassandra hostname",
-    :default => "localhost"
+         short:       '-h HOSTNAME',
+         long:        '--host HOSTNAME',
+         description: 'cassandra hostname',
+         default:     'localhost'
 
   option :port,
-    :short => "-P PORT",
-    :long => "--port PORT",
-    :description => "cassandra JMX port",
-    :default => "7199"
+         short:       '-P PORT',
+         long:        '--port PORT',
+         description: 'cassandra JMX port',
+         default:     '7199'
 
   # execute cassandra's nodetool and return output as string
   def nodetool_cmd(cmd)
@@ -44,6 +58,8 @@ class CheckCassandraSchema < Sensu::Plugin::Check::CLI
   def run
     out = nodetool_cmd('describecluster')
     bad_nodes = []
+    # #YEELOW
+    # use next instead
     out.each_line do |line|
       if m = line.match(/\s+UNREACHABLE:\s+(.*)\[(.*)\]\s+$/)
         bad_nodes << m[2]
@@ -57,7 +73,7 @@ class CheckCassandraSchema < Sensu::Plugin::Check::CLI
     end
 
     if bad_nodes.count > 0
-      critical("nodes " + bad_nodes.join(", ") + " are in schema disagreement")
+      critical('nodes ' + bad_nodes.join(', ') + ' are in schema disagreement')
     else
       ok
     end

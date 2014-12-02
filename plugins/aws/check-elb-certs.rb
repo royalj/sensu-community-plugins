@@ -17,7 +17,7 @@
 #   gem: aws-sdk
 #   gem: sensu-plugin
 #
-# EXAMPLES:
+# USAGE:
 #  ./check-ec2-network.rb -r ${you_region} -i ${your_instance_id} --warning-over 1000000 --critical-over 1500000
 #  ./check-ec2-network.rb -r ${you_region} -i ${your_instance_id} -d NetworkIn --warning-over 1000000 --critical-over 1500000
 #  ./check-ec2-network.rb -r ${you_region} -i ${your_instance_id} -d NetworkOut --warning-over 1000000 --critical-over 1500000
@@ -53,7 +53,7 @@ class CheckELBCerts < Sensu::Plugin::Check::CLI
   option :aws_region,
          :short       => '-r AWS_REGION',
          :long        => '--aws-region REGION',
-         :description => "AWS Region (such as eu-west-1).",
+         :description => 'AWS Region (such as eu-west-1).',
          :default     => 'us-east-1'
 
   option :warn_under,
@@ -62,6 +62,7 @@ class CheckELBCerts < Sensu::Plugin::Check::CLI
          :description => 'Warn on minimum number of days to SSL/TLS certificate expiration',
          :default     => 30,
          # #YELLOW
+         # dont use block (rubocop error)
          :proc        => proc { |a| a.to_i }
 
   option :crit_under,
@@ -70,6 +71,7 @@ class CheckELBCerts < Sensu::Plugin::Check::CLI
          :description => 'Minimum number of days to SSL/TLS certificate expiration',
          :default     => 5,
          # #YELLOW
+         # dont use block (rubocop error)
          :proc        => proc { |a| a.to_i }
 
   option :verbose,
@@ -79,11 +81,13 @@ class CheckELBCerts < Sensu::Plugin::Check::CLI
          :default     => false
 
   def cert_message(count, descriptor, limit)
-    message = (count == 1 ? "1 ELB cert is " : "#{count} ELB certs are ")
+    message = (count == 1 ? '1 ELB cert is ' : "#{count} ELB certs are ")
     message += "#{descriptor} #{limit} day"
-    message += (limit == 1 ? "" : "s") # rubocop:disable UselessAssignment
+    message += (limit == 1 ? '' : 's') # rubocop:disable UselessAssignment
   end
 
+  # #ORANGE
+  # complexity to high (rubocop error)
   def run
     ok_message = []
     warning_message = []
@@ -98,13 +102,15 @@ class CheckELBCerts < Sensu::Plugin::Check::CLI
 
     begin
       elb.load_balancers.each do |lb|
+        # #YELLOW
+        # use next (rubocop error)
         lb.listeners.each do |listener|
           if (listener.protocol.to_s == 'https')
             url = URI.parse("https://#{lb.dns_name}:#{listener.port}")
             http = Net::HTTP.new(url.host, url.port)
             http.use_ssl = true
             http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-            cert = ""
+            cert = ''
 
             begin
               http.start { cert = http.peer_cert }
@@ -130,16 +136,16 @@ class CheckELBCerts < Sensu::Plugin::Check::CLI
     end
 
     if critical_message.length > 0
-      message = cert_message(critical_message.length, "expiring within", config[:crit_under])
-      message += ": " + critical_message.sort.join(' ')
+      message = cert_message(critical_message.length, 'expiring within', config[:crit_under])
+      message += ': ' + critical_message.sort.join(' ')
       critical message
     elsif warning_message.length > 0
-      message = cert_message(warning_message.length, "expiring within", config[:warn_under])
-      message += ": " + warning_message.sort.join(' ')
+      message = cert_message(warning_message.length, 'expiring within', config[:warn_under])
+      message += ': ' + warning_message.sort.join(' ')
       warning message
     else
-      message = cert_message(ok_message.length, "valid for at least", config[:warn_under])
-      message += ": " + ok_message.sort.join(' ') if config[:verbose]
+      message = cert_message(ok_message.length, 'valid for at least', config[:warn_under])
+      message += ': ' + ok_message.sort.join(' ') if config[:verbose]
       ok message
     end
   end

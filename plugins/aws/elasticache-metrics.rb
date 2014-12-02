@@ -15,9 +15,9 @@
 #   gem: aws-sdk
 #
 # #YELLOW
-# needs example command
+# needs usage
 #
-# EXAMPLES:
+# USAGE:
 #
 # NOTES:
 #   Gets metrics from CloudWatch and puts them in Graphite
@@ -38,55 +38,57 @@ require 'aws-sdk'
 class ElastiCacheMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
   option :cacheclusterid,
-    :description => "Name of the Cache Cluster",
-    :short => "-n ELASTICACHE_NAME",
-    :long => "--name ELASTICACHE_NAME",
-    :required => true
+         :description => 'Name of the Cache Cluster',
+         :short       => '-n ELASTICACHE_NAME',
+         :long        => '--name ELASTICACHE_NAME',
+         :required    => true
 
   option :cachenodeid,
-    :description => 'Cache Node ID',
-    :short => '-i CACHE_NODE_ID',
-    :long => '--cache-node-id CACHE_NODE_ID',
-    :default => '0001'
+         :description => 'Cache Node ID',
+         :short       => '-i CACHE_NODE_ID',
+         :long        => '--cache-node-id CACHE_NODE_ID',
+         :default     => '0001'
 
   option :elasticachetype,
-    :description => "Elasticache type redis or memcached",
-    :short => "-c TYPE",
-    :long => "--cachetype TYPE",
-    :required => true
+         :description => 'Elasticache type redis or memcached',
+         :short       => '-c TYPE',
+         :long        => '--cachetype TYPE',
+         :required    => true
 
   option :scheme,
-    :description => "Metric naming scheme, text to prepend to metric",
-    :short => "-s SCHEME",
-    :long => "--scheme SCHEME",
-    :default => ""
+         :description => 'Metric naming scheme, text to prepend to metric',
+         :short       => '-s SCHEME',
+         :long        => '--scheme SCHEME',
+         :default     => ''
 
   option :fetch_age,
-    :description => "How long ago to fetch metrics for",
-    :short => "-f AGE",
-    :long => "--fetch_age",
-    :default => 60,
-    :proc => proc { |a| a.to_i }
+         :description => 'How long ago to fetch metrics for',
+         :short       => '-f AGE',
+         :long        => '--fetch_age',
+         :default     => 60,
+         # #YELLOW
+         # dont use block (rubocop error)
+         :proc        => proc { |a| a.to_i }
 
   option :aws_access_key,
-    :short => '-a AWS_ACCESS_KEY',
-    :long => '--aws-access-key AWS_ACCESS_KEY',
-    :description => "AWS Access Key. Either set ENV['AWS_ACCESS_KEY_ID'] or provide it as an option"
+         :short        => '-a AWS_ACCESS_KEY',
+         :long        => '--aws-access-key AWS_ACCESS_KEY',
+         :description => "AWS Access Key. Either set ENV['AWS_ACCESS_KEY_ID'] or provide it as an option"
 
   option :aws_secret_access_key,
-    :short => '-k AWS_SECRET_ACCESS_KEY',
-    :long => '--aws-secret-access-key AWS_SECRET_ACCESS_KEY',
-    :description => "AWS Secret Access Key. Either set ENV['AWS_SECRET_ACCESS_KEY'] or provide it as an option"
+         :short       => '-k AWS_SECRET_ACCESS_KEY',
+         :long        => '--aws-secret-access-key AWS_SECRET_ACCESS_KEY',
+         :description => "AWS Secret Access Key. Either set ENV['AWS_SECRET_ACCESS_KEY'] or provide it as an option"
 
   option :aws_region,
-    :short => '-r AWS_REGION',
-    :long => '--aws-region REGION',
-    :description => "AWS Region (such as us-east-1).",
-    :default => 'us-east-1'
+         :short       => '-r AWS_REGION',
+         :long        => '--aws-region REGION',
+         :description => 'AWS Region (such as us-east-1).',
+         :default     => 'us-east-1'
 
   def run
 
-    if config[:scheme] == ""
+    if config[:scheme] == ''
       graphitepath = "#{config[:elasticachename]}.#{config[:metric].downcase}"
     else
       graphitepath = config[:scheme]
@@ -190,7 +192,7 @@ class ElastiCacheMetrics < Sensu::Plugin::Metric::CLI::Graphite
       unless result.nil?
         result.each do |name, d|
           # We only return data when we have some to return
-          output graphitepath + '.' + name.downcase , d[:average], d[:timestamp].to_i
+          output graphitepath + '.' + name.downcase, d[:average], d[:timestamp].to_i
         end
       end
     rescue Exception => e

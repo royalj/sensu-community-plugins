@@ -1,5 +1,32 @@
 #! /usr/bin/env ruby
 #
+#
+# DESCRIPTION:
+#
+# OUTPUT:
+#   plain-text
+#
+# PLATFORMS:
+#   all
+#
+# DEPENDENCIES:
+#   gem: sensu-plugin
+#
+# #YELLOW
+# needs usage
+#
+# USAGE:
+#
+# NOTES:
+#
+# LICENSE:
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
+
+
+#! /usr/bin/env ruby
+#
 # check-docker-containers
 #
 #
@@ -16,7 +43,7 @@
 #  gem: docker
 #  gem: docker-api
 #
-# EXAMPLES:
+# USAGE:
 #   check-docker-container.rb -w 3 -c 3
 #     => 1 container running = OK.
 #     => 4 container running = CRITICAL

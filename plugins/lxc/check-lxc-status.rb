@@ -1,3 +1,29 @@
+#! /usr/bin/env ruby
+#
+#
+# DESCRIPTION:
+#
+# OUTPUT:
+#   plain-text
+#
+# PLATFORMS:
+#   all
+#
+# DEPENDENCIES:
+#   gem: sensu-plugin
+#
+# #YELLOW
+# needs usage
+#
+# USAGE:
+#
+# NOTES:
+#
+# LICENSE:
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
+
 #!/usr/bin/env ruby
 # check-lxc-status
 # ===
@@ -6,7 +32,7 @@
 #
 # Requires "lxc" gem
 #
-# Examples:
+# USAGE:
 #
 #   check-lxc-status.rb -n name    => name of the container
 #

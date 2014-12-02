@@ -1,10 +1,31 @@
-#!/usr/bin/env ruby
-# check-beanstalk-jobs.rb
-# ===
-# Author: S. Zachariah Sprackett <zac@sprackett.com>
+#! /usr/bin/env ruby
 #
-# Released under the same terms as Sensu (the MIT license); see LICENSE
-# for details.
+# check-beanstalk-jobs.rb
+#
+# DESCRIPTION:
+#
+# OUTPUT:
+#   plain-text
+#
+# PLATFORMS:
+#   all
+#
+# DEPENDENCIES:
+#   gem: sensu-plugin
+#   gem: beanstalk-client
+#
+# #YELLOW
+# needs usage
+#
+# USAGE:
+#
+# NOTES:
+#
+# LICENSE:
+#   Author: S. Zachariah Sprackett <zac@sprackett.com>
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/check/cli'
@@ -12,30 +33,46 @@ require 'beanstalk-client'
 
 class CheckBeanstalkWorkers < Sensu::Plugin::Check::CLI
   option :host,
-    :short   => '-H HOST',
-    :default => 'localhost'
-  option :port,
-    :short   => '-p PORT',
-    :default => '11300'
-  option :tube,
-    :short   => '-t TUBE'
-  option :crit_high,
-    :short   => '-c CRIT_HIGH_THRESHOLD',
-    :proc    => proc { |a| a.to_i },
-    :default => false
-  option :warn_high,
-    :short   => '-w WARN_HIGH_THRESHOLD',
-    :proc    => proc { |a| a.to_i },
-    :default => false
-  option :crit_low,
-    :short   => '-C CRIT_LOW_THRESHOLD',
-    :proc    => proc { |a| a.to_i },
-    :default => 0
-  option :warn_low,
-    :short   => '-W WARN_LOW_THRESHOLD',
-    :proc    => proc { |a| a.to_i },
-    :default => 0
+         :short   => '-H HOST',
+         :default => 'localhost'
 
+  option :port,
+         :short   => '-p PORT',
+         :default => '11300'
+
+  option :tube,
+         :short   => '-t TUBE'
+
+  option :crit_high,
+         :short   => '-c CRIT_HIGH_THRESHOLD',
+         # #YELLOW
+         # dont use block (rubocop error)
+         :proc    => proc { |a| a.to_i },
+         :default => false
+
+  option :warn_high,
+         :short   => '-w WARN_HIGH_THRESHOLD',
+         # #YELLOW
+         # dont use block (rubocop error)
+         :proc    => proc { |a| a.to_i },
+         :default => false
+
+  option :crit_low,
+         :short   => '-C CRIT_LOW_THRESHOLD',
+         # #YELLOW
+         # dont use block (rubocop error)
+         :proc    => proc { |a| a.to_i },
+         :default => 0
+
+  option :warn_low,
+         :short   => '-W WARN_LOW_THRESHOLD',
+         # #YELLOW
+         # dont use block (rubocop error)
+         :proc    => proc { |a| a.to_i },
+         :default => 0
+
+  # #ORANGE
+  # complexity to high (rubocop error)
   def run
     begin
       beanstalk = Beanstalk::Connection.new(

@@ -16,7 +16,7 @@
 #   gem: right-aws
 #   gem: sensu-plugin
 #
-# EXAMPLES:
+# USAGE:
 #     # Warning if any load balancer's latency is over 1 second, critical if over 3 seconds.
 #     check-elb-latency --warning-over 1 --critical-over 3
 #
@@ -31,57 +31,59 @@
 #   for details.
 #
 
-require "sensu-plugin/check/cli"
-require "aws-sdk"
+require 'sensu-plugin/check/cli'
+require 'aws-sdk'
 
 class CheckELBLatency < Sensu::Plugin::Check::CLI
   option :access_key_id,
-         short:       "-k N",
-         long:        "--access-key-id ID",
-         description: "AWS access key ID"
+         short:       '-k N',
+         long:        '--access-key-id ID',
+         description: 'AWS access key ID'
 
   option :secret_access_key,
-         short:       "-s N",
-         long:        "--secret-access-key KEY",
-         description: "AWS secret access key"
+         short:       '-s N',
+         long:        '--secret-access-key KEY',
+         description: 'AWS secret access key'
 
   option :region,
-         short:       "-r R",
-         long:        "--region REGION",
-         description: "AWS region"
+         short:       '-r R',
+         long:        '--region REGION',
+         description: 'AWS region'
 
   option :elb_names,
-         short:       "-l N",
-         long:        "--elb-names NAMES",
+         short:       '-l N',
+         long:        '--elb-names NAMES',
          proc:        proc { |a| a.split(/[,;]\s*/) },
-         description: "Load balancer names to check. Separated by , or ;. If not specified, check all load balancers"
+         description: 'Load balancer names to check. Separated by , or ;. If not specified, check all load balancers'
 
   option :end_time,
-         short:       "-t T",
-         long:        "--end-time TIME",
+         short:       '-t T',
+         long:        '--end-time TIME',
          default:     Time.now,
          proc:        proc { |a| Time.parse a },
-         description: "CloudWatch metric statistics end time"
+         description: 'CloudWatch metric statistics end time'
 
   option :period,
-         short:       "-p N",
-         long:        "--period SECONDS",
+         short:       '-p N',
+         long:        '--period SECONDS',
          default:     60,
          # #YELLOW
+         # dont use block (rubocop error)
          proc:        proc { |a| a.to_i },
-         description: "CloudWatch metric statistics period"
+         description: 'CloudWatch metric statistics period'
 
   option :statistics,
-         short:       "-S N",
-         long:        "--statistics NAME",
+         short:       '-S N',
+         long:        '--statistics NAME',
          default:     :average,
          proc:        proc { |a| a.downcase.intern },
-         description: "CloudWatch statistics method"
+         description: 'CloudWatch statistics method'
 
   %w(warning critical).each do |severity|
     option :"#{severity}_over",
            long:        "--#{severity}-over SECONDS",
            # #YELLOW
+           # dont use block (rubocop error)
            proc:        proc { |a| a.to_f },
            description: "Trigger a #{severity} if latancy is over specified seconds"
   end
@@ -109,7 +111,7 @@ class CheckELBLatency < Sensu::Plugin::Check::CLI
   end
 
   def latency_metric(elb_name)
-    cloud_watch.metrics.with_namespace("AWS/ELB").with_metric_name("Latency").with_dimensions(name: "LoadBalancerName", value: elb_name).first
+    cloud_watch.metrics.with_namespace('AWS/ELB').with_metric_name('Latency').with_dimensions(name: 'LoadBalancerName', value: elb_name).first
   end
 
   def statistics_options
@@ -122,7 +124,7 @@ class CheckELBLatency < Sensu::Plugin::Check::CLI
   end
 
   def latest_value(metric)
-    metric.statistics(statistics_options.merge unit: "Seconds").datapoints.sort_by { |datapoint| datapoint[:timestamp] }.last[config[:statistics]]
+    metric.statistics(statistics_options.merge unit: 'Seconds').datapoints.sort_by { |datapoint| datapoint[:timestamp] }.last[config[:statistics]]
   end
 
   def flag_alert(severity, message)
@@ -143,7 +145,9 @@ class CheckELBLatency < Sensu::Plugin::Check::CLI
       next unless threshold
       next if metric_value < threshold
       flag_alert severity,
-        "; #{elbs.size == 1 ? nil : "#{elb.inspect}'s"} Latency is #{sprintf "%.3f", metric_value} seconds. (expected lower than #{sprintf "%.3f", threshold})"
+                 # #YELLOW
+                 # use %w if possible (rubocop error)
+                 "; #{elbs.size == 1 ? nil : "#{elb.inspect}'s"} Latency is #{sprintf "%.3f", metric_value} seconds. (expected lower than #{sprintf "%.3f", threshold})"
       break
     end
   end

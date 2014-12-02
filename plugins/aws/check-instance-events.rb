@@ -18,9 +18,9 @@
 #   gem: aws-sdk
 #
 # #YELLOW
-# needs example command
+# needs usage
 #
-# EXAMPLES:
+# USAGE:
 #
 # NOTES:
 #   enable extended mod_status
@@ -37,27 +37,27 @@ require 'aws-sdk'
 
 class CheckInstanceEvents < Sensu::Plugin::Check::CLI
   option :aws_access_key,
-    :short => '-a AWS_ACCESS_KEY',
-    :long => '--aws-access-key AWS_ACCESS_KEY',
-    :description => "AWS Access Key. Either set ENV['AWS_ACCESS_KEY_ID'] or provide it as an option",
-    :default => ENV['AWS_ACCESS_KEY_ID']
+         :short       => '-a AWS_ACCESS_KEY',
+         :long        => '--aws-access-key AWS_ACCESS_KEY',
+         :description => "AWS Access Key. Either set ENV['AWS_ACCESS_KEY_ID'] or provide it as an option",
+         :default     => ENV['AWS_ACCESS_KEY_ID']
 
   option :use_iam_role,
-    :short => '-u',
-    :long => '--use-iam',
-    :description => "Use IAM role authenticiation. Instance must have IAM role assigned for this to work"
+         :short       => '-u',
+         :long        => '--use-iam',
+         :description => 'Use IAM role authenticiation. Instance must have IAM role assigned for this to work'
 
   option :aws_secret_access_key,
-    :short => '-s AWS_SECRET_ACCESS_KEY',
-    :long => '--aws-secret-access-key AWS_SECRET_ACCESS_KEY',
-    :description => "AWS Secret Access Key. Either set ENV['AWS_SECRET_ACCESS_KEY'] or provide it as an option",
-    :default => ENV['AWS_SECRET_ACCESS_KEY']
+         :short       => '-s AWS_SECRET_ACCESS_KEY',
+         :long        => '--aws-secret-access-key AWS_SECRET_ACCESS_KEY',
+         :description => "AWS Secret Access Key. Either set ENV['AWS_SECRET_ACCESS_KEY'] or provide it as an option",
+         :default     => ENV['AWS_SECRET_ACCESS_KEY']
 
   option :aws_region,
-    :short => '-r AWS_REGION',
-    :long => '--aws-region REGION',
-    :description => "AWS Region (such as eu-west-1).",
-    :default => 'us-east-1'
+         :short       => '-r AWS_REGION',
+         :long        => '--aws-region REGION',
+         :description => 'AWS Region (such as eu-west-1).',
+         :default     => 'us-east-1'
 
   def run
     event_instances = []

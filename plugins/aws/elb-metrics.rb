@@ -15,9 +15,9 @@
 #   gem: fog
 #
 # #YELLOW
-# needs example command
+# needs usage
 #
-# EXAMPLES:
+# USAGE:
 #
 # NOTES:
 #   Gets latency metrics from CloudWatch and puts them in Graphite for longer term storage
@@ -42,54 +42,56 @@ require 'fog'
 class ELBMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
   option :elbname,
-    :description => "Name of the Elastic Load Balancer",
-    :short => "-n ELB_NAME",
-    :long => "--name ELB_NAME"
+         :description => 'Name of the Elastic Load Balancer',
+         :short => '-n ELB_NAME',
+         :long => '--name ELB_NAME'
 
   option :scheme,
-    :description => "Metric naming scheme, text to prepend to metric",
-    :short => "-s SCHEME",
-    :long => "--scheme SCHEME",
-    :default => ""
+         :description => 'Metric naming scheme, text to prepend to metric',
+         :short => '-s SCHEME',
+         :long => '--scheme SCHEME',
+         :default => ''
 
   option :fetch_age,
-    :description => "How long ago to fetch metrics for",
-    :short => "-f AGE",
-    :long => "--fetch_age",
-    :default => 60,
-    :proc => proc { |a| a.to_i }
+         :description => 'How long ago to fetch metrics for',
+         :short => '-f AGE',
+         :long => '--fetch_age',
+         :default => 60,
+         # #YELLOW
+         # dont use block (rubocop error)
+         :proc => proc { |a| a.to_i }
 
   option :metric,
-    :description => "Metric to fetch",
-    :short => "-m METRIC",
-    :long => "--metric",
-    :default => "Latency"
+         :description => 'Metric to fetch',
+         :short => '-m METRIC',
+         :long => '--metric',
+         :default => 'Latency'
 
   option :statistics,
-    :description => "Statistics type",
-    :short => "-t STATISTICS",
-    :long => "--statistics",
-    :default => ""
+         :description => 'Statistics type',
+         :short => '-t STATISTICS',
+         :long => '--statistics',
+         :default => ''
 
   option :aws_access_key,
-    :short => '-a AWS_ACCESS_KEY',
-    :long => '--aws-access-key AWS_ACCESS_KEY',
-    :description => "AWS Access Key. Either set ENV['AWS_ACCESS_KEY'] or provide it as an option",
-    :required => true,
-    :default => ENV['AWS_ACCESS_KEY']
+         :short => '-a AWS_ACCESS_KEY',
+         :long => '--aws-access-key AWS_ACCESS_KEY',
+         :description => "AWS Access Key. Either set ENV['AWS_ACCESS_KEY'] or provide it as an option",
+         :required => true,
+         :default => ENV['AWS_ACCESS_KEY']
 
   option :aws_secret_access_key,
-    :short => '-k AWS_SECRET_KEY',
-    :long => '--aws-secret-access-key AWS_SECRET_KEY',
-    :description => "AWS Secret Access Key. Either set ENV['AWS_SECRET_KEY'] or provide it as an option",
-    :required => true,
-    :default => ENV['AWS_SECRET_KEY']
+         :short => '-k AWS_SECRET_KEY',
+         :long => '--aws-secret-access-key AWS_SECRET_KEY',
+         :description => "AWS Secret Access Key. Either set ENV['AWS_SECRET_KEY'] or provide it as an option",
+         :required => true,
+         :default => ENV['AWS_SECRET_KEY']
 
   option :aws_region,
-    :short => '-r AWS_REGION',
-    :long => '--aws-region REGION',
-    :description => "AWS Region (such as eu-west-1).",
-    :default => 'us-east-1'
+         :short => '-r AWS_REGION',
+         :long => '--aws-region REGION',
+         :description => 'AWS Region (such as eu-west-1).',
+         :default => 'us-east-1'
 
   def query_instance_region
     begin
@@ -99,18 +101,20 @@ class ELBMetrics < Sensu::Plugin::Metric::CLI::Graphite
       end
       instance_az[0...-1]
     rescue Exception
-      raise "Cannot obtain this instance's Availability Zone. Maybe not running on AWS?"
+      raise 'Cannot obtain this instances Availability Zone. Maybe not running on AWS?'
     end
   end
 
+  # #ORANGE
+  # complexity to high (rubocop error)
   def run
-    if config[:scheme] == ""
+    if config[:scheme] == ''
       graphitepath = "#{config[:elbname]}.#{config[:metric].downcase}"
     else
       graphitepath = config[:scheme]
     end
-    statistics = ""
-    if config[:statistics] == ""
+    statistics = ''
+    if config[:statistics] == ''
       statistic_type = {
         'Latency' => 'Average',
         'RequestCount' => 'Sum',
@@ -138,17 +142,18 @@ class ELBMetrics < Sensu::Plugin::Metric::CLI::Graphite
       et = Time.now - config[:fetch_age]
       st = et - 60
 
-      result = cw.get_metric_statistics({
+      result = cw.get_metric_statistics
+      ({
         'Namespace' => 'AWS/ELB',
         'MetricName' => config[:metric],
         'Dimensions' => [{
           'Name' => 'LoadBalancerName',
           'Value' => config[:elbname],
-         }],
-         'Statistics' => [statistics],
-         'StartTime' => st.iso8601,
-         'EndTime' => et.iso8601,
-         'Period' => '60'
+        }],
+        'Statistics' => [statistics],
+        'StartTime'  => st.iso8601,
+        'EndTime'    => et.iso8601,
+        'Period'     => '60'
       })
       data = result.body['GetMetricStatisticsResult']['Datapoints'][0]
       unless data.nil?

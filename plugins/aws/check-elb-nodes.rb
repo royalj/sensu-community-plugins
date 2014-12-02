@@ -17,7 +17,7 @@
 #   gem: aws-sdk
 #   gem: sensu-plugin
 #
-# EXAMPLES:
+# USAGE:
 #     # Warning if any load balancer's latency is over 1 second, critical if over 3 seconds.
 #     check-elb-latency --warning-over 1 --critical-over 3
 #
@@ -39,61 +39,67 @@ require 'aws-sdk'
 class CheckELBNodes < Sensu::Plugin::Check::CLI
 
   option :aws_access_key,
-         :short => '-a AWS_ACCESS_KEY',
-         :long => '--aws-access-key AWS_ACCESS_KEY',
+         :short       => '-a AWS_ACCESS_KEY',
+         :long        => '--aws-access-key AWS_ACCESS_KEY',
          :description => "AWS Access Key. Either set ENV['AWS_ACCESS_KEY_ID'] or provide it as an option",
-         :required => true
+         :required    => true
 
   option :aws_secret_access_key,
-         :short => '-s AWS_SECRET_ACCESS_KEY',
-         :long => '--aws-secret-access-key AWS_SECRET_ACCESS_KEY',
+         :short       => '-s AWS_SECRET_ACCESS_KEY',
+         :long        => '--aws-secret-access-key AWS_SECRET_ACCESS_KEY',
          :description => "AWS Secret Access Key. Either set ENV['AWS_SECRET_ACCESS_KEY'] or provide it as an option",
-         :required => true
+         :required    => true
 
   option :aws_region,
-         :short => '-r AWS_REGION',
-         :long => '--aws-region REGION',
-         :description => "AWS Region (such as eu-west-1).",
-         :default => 'us-east-1'
+         :short       => '-r AWS_REGION',
+         :long        => '--aws-region REGION',
+         :description => 'AWS Region (such as eu-west-1).',
+         :default     => 'us-east-1'
 
   option :load_balancer,
-         :short => '-n ELB_NAME',
-         :long => '--name ELB_NAME',
+         :short       => '-n ELB_NAME',
+         :long        => '--name ELB_NAME',
          :description => 'The name of the ELB',
-         :required => true
+         :required    => true
 
   option :warn_under,
-         :short  => '-w WARN_NUM',
-         :long  => '--warn WARN_NUM',
+         :short       => '-w WARN_NUM',
+         :long        => '--warn WARN_NUM',
          :description => 'Minimum number of nodes InService on the ELB to be considered a warning',
-         :default => -1,
+         :default     => -1,
          # #YELLOW
+         # dont use block (rubocop error)
          :proc => proc { |a| a.to_i }
 
   option :crit_under,
-         :short  => '-c CRIT_NUM',
-         :long  => '--crit CRIT_NUM',
+         :short       => '-c CRIT_NUM',
+         :long        => '--crit CRIT_NUM',
          :description => 'Minimum number of nodes InService on the ELB to be considered critical',
-         :default => -1,
+         :default     => -1,
          # #YELLOW
-         :proc => proc { |a| a.to_i }
+         # dont use block (rubocop error)
+         :proc        => proc { |a| a.to_i }
 
   option :warn_percent,
-         :short => '-W WARN_PERCENT',
-         :long => '--warn_perc WARN_PERCENT',
+         :short       => '-W WARN_PERCENT',
+         :long        => '--warn_perc WARN_PERCENT',
          :description => 'Warn when the percentage of InService nodes is at or below this number',
-         :default => -1,
+         :default     => -1,
          # #YELLOW
-         :proc => proc { |a| a.to_i }
+         # dont use block (rubocop error)
+         :proc        => proc { |a| a.to_i }
 
   option :crit_percent,
-         :short => '-C CRIT_PERCENT',
-         :long => '--crit_perc CRIT_PERCENT',
+         :short       => '-C CRIT_PERCENT',
+         :long        => '--crit_perc CRIT_PERCENT',
          :description => 'Minimum percentage of nodes needed to be InService',
-         :default => -1,
+         :default     => -1,
          # #YELLOW
-         :proc => proc { |a| a.to_i }
+         # dont use block (rubocop error)
+         :proc        => proc { |a| a.to_i }
 
+  # #ORANGE
+  # complexity to high (rubocop error)
   def run
     AWS.start_memoizing
     elb = AWS::ELB.new(
@@ -130,7 +136,7 @@ class CheckELBNodes < Sensu::Plugin::Check::CLI
     end
 
     if state['Unknown'].count == num_instances
-      unknown "All nodes in unknown state"
+      unknown 'All nodes in unknown state'
     elsif state['InService'].count == 0
       critical message
     elsif config[:crit_under] > 0 && config[:crit_under] >= state['InService'].count

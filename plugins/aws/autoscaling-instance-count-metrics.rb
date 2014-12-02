@@ -17,8 +17,8 @@
 #   gem: sensu-plugin
 #
 # #YELLOW
-# needs example command
-# EXAMPLES:
+# needs usage
+# USAGE:
 #
 #
 # NOTES:
@@ -76,6 +76,7 @@ class AutoScalingInstanceCountMetrics < Sensu::Plugin::Metric::CLI::Graphite
         :aws_secret_access_key  => config[:aws_secret_access_key],
         :region             => config[:aws_region])
       # #YELLOW
+      # dont use block (rubocop error)
       count = as.groups.get(config[:groupname]).instances.map { |i| i.life_cycle_state }.count('InService')
       output graphitepath, count
 

@@ -1,13 +1,13 @@
 #! /usr/bin/env ruby
 #
-# AutoScaling Group Instance Metrics
+# autoscaling-instance-count-metrics
 #
 #
 # DESCRIPTION:
-# Get a count of instances in a given AutoScaling group
+#   Get a count of instances in a given AutoScaling group
 #
 # OUTPUT:
-#   plain-text
+#   metric data
 #
 # PLATFORMS:
 #   Linux
@@ -18,6 +18,7 @@
 #
 # #YELLOW
 # needs usage
+#
 # USAGE:
 #
 #

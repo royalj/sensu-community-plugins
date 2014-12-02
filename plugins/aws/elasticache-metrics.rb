@@ -1,11 +1,12 @@
 #! /usr/bin/env ruby
 #
-# Fetch Elasticache metrics from CloudWatch
+# elasticache-metrics
 #
 # DESCRIPTION:
+#  Gets metrics from CloudWatch and puts them in Graphite
 #
 # OUTPUT:
-#   plain-text
+#   metric data
 #
 # PLATFORMS:
 #   Linux
@@ -20,7 +21,6 @@
 # USAGE:
 #
 # NOTES:
-#   Gets metrics from CloudWatch and puts them in Graphite
 #   Redis: http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/CacheMetrics.Redis.html
 #   Memcached: http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/CacheMetrics.Memcached.html
 #   By default fetches all available statistics from one minute ago.  You may need to fetch further back than this;

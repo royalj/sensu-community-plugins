@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 #
-# Apache metrics based on mod_status
+# check-instance-events
 #
 #
 # DESCRIPTION:

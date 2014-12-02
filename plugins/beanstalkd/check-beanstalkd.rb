@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 #
-# Check beanstalkd queues
+# check-beanstalkd
 #
 # DESCRIPTION:
 #   This plugin checks the beanstalkd queue, using the beaneater gem

@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 #
-# check-beanstalk-statistics.rb
+# check-beanstalk-statistics
 #
 # DESCRIPTION:
 #

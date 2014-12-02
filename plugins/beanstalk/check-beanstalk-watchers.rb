@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 #
-# check-beanstalk-watchers.rb
+# check-beanstalk-watchers
 #
 # DESCRIPTION:
 #

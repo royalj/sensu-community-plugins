@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 #
-# Apache metrics based on mod_status
+# apache-graphite
 #
 #
 # DESCRIPTION:
@@ -8,7 +8,7 @@
 #   it, and generates Apache process metrics formatted for Graphite.
 #
 # OUTPUT:
-#   Graphite plain-text format (name value timestamp\n)
+#   metric data
 #
 # PLATFORMS:
 #   Linux

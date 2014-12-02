@@ -1,12 +1,12 @@
 #! /usr/bin/env ruby
 #
-# Count EC2 instances
+# ec2-count-metrics
 #
 # DESCRIPTION:
 #   This plugin retrives number of EC2 status
 #
 # OUTPUT:
-#   plain-text
+#   metirc data
 #
 # PLATFORMS:
 #   Linux

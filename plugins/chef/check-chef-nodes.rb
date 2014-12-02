@@ -1,12 +1,13 @@
 #! /usr/bin/env ruby
 #
-# Check Chef nodes
+# check-chef-nodes
 #
 # DESCRIPTION:
 #   It will report you nodes from you cluster last seen more then some amount of seconds
-# Set CRITICAL-TIMESPAN to something interval + splay + <average chef kitchen run time>
-# Released under the same terms as Sensu (the MIT license); see LICENSE
-# for details.
+#   Set CRITICAL-TIMESPAN to something interval + splay + <average chef kitchen run time>
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
 # OUTPUT:
 #   plain-text
 #
@@ -20,9 +21,9 @@
 # needs usage
 #
 # USAGE:
+#   Look for nodes that haven't check in for 1 or more hours
+#   ./check-chef-nodes.rb -t 3600 -U https://api.opscode.com/organizations/<org> -K /path/to/org.pem
 #
-# Look for nodes that haven't check in for 1 or more hours
-# ./check-chef-nodes.rb -t 3600 -U https://api.opscode.com/organizations/<org> -K /path/to/org.pem
 # NOTES:
 #
 # LICENSE:

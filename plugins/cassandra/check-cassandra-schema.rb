@@ -1,14 +1,11 @@
 #! /usr/bin/env ruby
 #
-# Check for Cassandra Schema Disagreement
+# check-cassandra-schema
 #
 # DESCRIPTION:
 #
 #   This plugin uses Apache Cassandra's `nodetool` to check to see
 #   if any node in the cluster has run into a schema disagreement problem
-#
-#   See http://www.datastax.com/documentation/cassandra/2.0/cassandra/dml/dml_handle_schema_disagree_t.html
-#   for more details
 #
 # OUTPUT:
 #   plain-text
@@ -26,6 +23,8 @@
 # USAGE:
 #
 # NOTES:
+#   See http://www.datastax.com/documentation/cassandra/2.0/cassandra/dml/dml_handle_schema_disagree_t.html
+#   for more details
 #
 # LICENSE:
 #   Released under the same terms as Sensu (the MIT license); see LICENSE

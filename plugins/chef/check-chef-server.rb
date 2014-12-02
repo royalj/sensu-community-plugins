@@ -1,12 +1,13 @@
 #! /usr/bin/env ruby
 #
-# Check for chef-server health using chef-server-ctl
+# check-chef-server
 #
 # DESCRIPTION:
 #   This plugin uses Chef Servers's `chef-server-ctl` to check to see if
 #   any component of the chef server is not running.  This plugin needs
 #   to be run with elevated privileges (sudo) or it will fail with unknown
 #   state.
+#
 # OUTPUT:
 #   plain-text
 #

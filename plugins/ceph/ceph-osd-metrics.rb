@@ -1,19 +1,19 @@
 #! /usr/bin/env ruby
 #
-# Ceph OSD Metrics
+# ceph-osd-metrics
 #
 # DESCRIPTION:
 #   Dumps performance metrics from Ceph OSD admin socket into graphite-
-# friendly format. It is up to the implementer to create the admin
-# socket(s) and to handle the necessary permissions for sensu to access
-# (sudo, etc.). In the default configuration, admin sockets are expected
-# to reside in /var/run/ceph with a file format of ceph-osd.*.asok.
+#   friendly format. It is up to the implementer to create the admin
+#   socket(s) and to handle the necessary permissions for sensu to access
+#   (sudo, etc.). In the default configuration, admin sockets are expected
+#   to reside in /var/run/ceph with a file format of ceph-osd.*.asok.
 #
-# If a different file search pattern is specificied, it is expected to
-# have exactly one '*' wildcard denoting the OSD number.
+#   If a different file search pattern is specificied, it is expected to
+#   have exactly one '*' wildcard denoting the OSD number.
 #
 # OUTPUT:
-#   plain-text
+#   metric data
 #
 # PLATFORMS:
 #   Linux
@@ -21,7 +21,6 @@
 # DEPENDENCIES:
 #   gem: sensu-plugin
 #   ceph client
-
 #
 # #YELLOW
 # needs usage

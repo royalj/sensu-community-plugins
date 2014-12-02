@@ -1,7 +1,11 @@
 #! /usr/bin/env ruby
 #
+#  check-couchbase-bucket-quota
 #
 # DESCRIPTION:
+#   This plugin checks Couchbase bucket RAM usage quotas.
+#   Based on bucket usage pattern you might want to get alerted then couchbase
+#   bucket ram quota is getting close to high watermark and items will get evicted to disk.
 #
 # OUTPUT:
 #   plain-text
@@ -11,6 +15,7 @@
 #
 # DEPENDENCIES:
 #   gem: sensu-plugin
+#   gem: rest-client
 #
 # #YELLOW
 # needs usage
@@ -18,31 +23,12 @@
 # USAGE:
 #
 # NOTES:
+#   This plugin is tested against couchbase 1.8.x
 #
 # LICENSE:
 #   Released under the same terms as Sensu (the MIT license); see LICENSE
 #   for details.
 #
-
-#!/usr/bin/env ruby
-#
-# Check Couchbase Bucket RAM Quota Plugin
-# ===
-#
-# DESCRIPTION:
-#   This plugin checks Couchbase bucket RAM usage quotas.
-#   Based on bucket usage pattern you might want to get alerted then couchbase
-#   bucket ram quota is getting close to high watermark and items will get evicted to disk.
-#
-# COMPATIBILITY:
-#   This plugin is tested against couchbase 1.8.x
-#
-# DEPENDENCIES:
-#   sensu-plugin Ruby gem
-#   rest-client Ruby gem
-#
-# Released under the same terms as Sensu (the MIT license); see LICENSE
-# for details.
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/check/cli'

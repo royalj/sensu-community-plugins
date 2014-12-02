@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 #
-# check-beanstalk-watchers-to-buried.rb
+# check-beanstalk-watchers-to-buried
 #
 # DESCRIPTION:
 #

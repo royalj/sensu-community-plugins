@@ -1,23 +1,13 @@
 #! /usr/bin/env ruby
 #
-# Cassandra metrics using nodetool
+#   cassandra-graphite
 #
 # DESCRIPTION:
 #   This plugin uses Apache Cassandra's `nodetool` to collect metrics
-#   from an instance of Cassandra. Default is localhost and port 7199.
-#   Use 8080 for Cassandra < 0.8.
-#
-#   By default, only 'info' and 'tpstats' metrics will be output, but
-#   can be disabled with `--no-info` or `--no-tpstats`.
-#
-#   Use `--cfstats` to get detailed metrics on keyspaces and column
-#   families.
-#
-#   Only column-families matching a regex will be output if the
-#   `--filter REGEX` flag is used.
+#   from an instance of Cassandra.
 #
 # OUTPUT:
-#   Graphite plain-text format (name value timestamp\n)
+#   metric data
 #
 # PLATFORMS:
 #   Linux
@@ -57,8 +47,20 @@
 #     $ ./cassandra-metrics.rb --cfstats NOTHING_SHOULD_MATCH_THIS_REGEX
 #
 # NOTES:
-# Heavily inspired by Datadog's python plugin:
-# https://github.com/miketheman/dd-agent/blob/master/checks/cassandra.py
+#   Default is localhost and port 7199.
+#   Use 8080 for Cassandra < 0.8.
+#
+#   By default, only 'info' and 'tpstats' metrics will be output, but
+#   can be disabled with `--no-info` or `--no-tpstats`.
+#
+#   Use `--cfstats` to get detailed metrics on keyspaces and column
+#   families.
+#
+#   Only column-families matching a regex will be output if the
+#   `--filter REGEX` flag is used.
+#
+#   Heavily inspired by Datadog's python plugin:
+#   https://github.com/miketheman/dd-agent/blob/master/checks/cassandra.py
 #
 # LICENSE:
 #   Copyright 2012 Joe Miller https://github.com/joemiller

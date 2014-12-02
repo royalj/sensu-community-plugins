@@ -1,12 +1,12 @@
 #! /usr/bin/env ruby
 #
-# Pull beanstalkd metrics
+# beanstalkd-metrics
 #
 # DESCRIPTION:
 #   This plugin checks the beanstalkd stats, using the beaneater gem
 #
 # OUTPUT:
-#   plain-text
+#   metric data
 #
 # PLATFORMS:
 #   Linux

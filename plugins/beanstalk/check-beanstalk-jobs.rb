@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 #
-# check-beanstalk-jobs.rb
+# check-beanstalk-jobs
 #
 # DESCRIPTION:
 #

@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 #
-# Checks SQS messages
+# check-sqs-messages
 #
 # DESCRIPTION:
 #   This plugin checks the number of messages in an Amazon Web Services SQS queue.

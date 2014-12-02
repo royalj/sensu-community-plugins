@@ -1,5 +1,6 @@
 #! /usr/bin/env ruby
 #
+# check_cucumber_spec
 #
 # DESCRIPTION:
 #
@@ -63,7 +64,7 @@ describe CheckCucumber do
 
       describe 'when the config is valid' do
         before(:each) do
-          expect(check_cucumber).to receive('config_is_valid?') {true}
+          expect(check_cucumber).to receive('config_is_valid?') { true }
         end
 
         it 'executes Cucumber' do
@@ -76,7 +77,7 @@ describe CheckCucumber do
 
       describe 'when the config is invalid' do
         before(:each) do
-          expect(check_cucumber).to receive('config_is_valid?') {false}
+          expect(check_cucumber).to receive('config_is_valid?') { false }
         end
 
         it 'does not execute Cucumber' do
@@ -101,7 +102,7 @@ describe CheckCucumber do
           expect(check_cucumber).to receive('execute_cucumber').with({}, 'cucumber-js features/', 'example-working-dir', 0.0) do
             {:results => results.to_json, :exit_status => 0}
           end
-          Time.stub_chain(:now, :getutc, :to_i) {123}
+          Time.stub_chain(:now, :getutc, :to_i) { 123 }
         end
 
         describe 'when there are no features' do
@@ -323,7 +324,7 @@ describe CheckCucumber do
         describe 'when the Cucumber results JSON contains a UTF-8 character' do
           before(:each) do
             results << generate_feature(:feature_description => "Contains the \u2190 leftwards arrow character".encode('utf-8'),
-                                       :scenarios => [{:step_statuses => :passed}])
+                                        :scenarios => [{:step_statuses => :passed}])
           end
 
           it 'returns ok' do
@@ -365,8 +366,8 @@ describe CheckCucumber do
         describe 'when the Cucumber results include attachments' do
           before(:each) do
             results << generate_feature(:scenarios => [{:step_statuses => :passed,
-                                                       :step_attachments => [{:data => 'example-data',
-                                                                              :mime_type => 'text/plain'}]}])
+                                                        :step_attachments => [{:data => 'example-data',
+                                                                               :mime_type => 'text/plain'}]}])
           end
 
           describe 'when configured to include attachments in events' do
@@ -534,7 +535,7 @@ describe CheckCucumber do
       describe 'when Cucumber execution exceeds the timeout' do
         before(:each) do
           expect(check_cucumber).to receive('execute_cucumber').with({}, 'cucumber-js features/', 'example-working-dir', 123) do
-            raise Timeout::Error, "Cucumber timed out"
+            raise Timeout::Error, 'Cucumber timed out'
           end
         end
 
@@ -556,7 +557,7 @@ describe CheckCucumber do
         results = []
         results << generate_feature(:feature_index => 0, :scenarios => [{:step_statuses => :passed}])
         results << generate_feature(:feature_index => 1, :scenarios => [{:step_statuses => :passed}])
-        Time.stub_chain(:now, :getutc, :to_i) {123}
+        Time.stub_chain(:now, :getutc, :to_i) { 123 }
       end
 
       describe 'when there is a single event data item' do
@@ -659,6 +660,8 @@ describe CheckCucumber do
       end
 
       ["12.3\ntext", "text\n12.3", "text\n12.3\ntext", '1a23'].each do |string_value|
+        # #YELLOW
+        # set to single quotes if possible
         describe "when an event data item is almost a float and its value is #{string_value.gsub("\n", "\\n")}" do
           before(:each) do
             args = default_args.dup
@@ -876,7 +879,7 @@ describe CheckCucumber do
 
     it 'replaces every character (except letters, periods, hyphens and underscores) with hyphen' do
       id = ''
-      (1..254).each {|ascii_code| id += ascii_code.chr}
+      (1..254).each { |ascii_code| id += ascii_code.chr }
 
       scenario = {:id => id}
       name = check_cucumber.generate_name_from_scenario(feature, scenario)
@@ -1042,9 +1045,9 @@ describe CheckCucumber do
     it 'generates metrics for a single step' do
       scenario[:steps] << {:result => {:duration => 0.5}}
       metrics = check_cucumber.generate_metrics_from_scenario(feature, scenario, :passed, 123)
-      expected_metrics = "example-metric-prefix.example-scenario-id.duration 0.5 123\n" +
-        "example-metric-prefix.example-scenario-id.step-count 1 123\n" +
-        "example-metric-prefix.example-scenario-id.step-1.duration 0.5 123"
+      expected_metrics = "example-metric-prefix.example-scenario-id.duration 0.5 123\n" \
+        "example-metric-prefix.example-scenario-id.step-count 1 123\n" \
+        'example-metric-prefix.example-scenario-id.step-1.duration 0.5 123'
       expect(metrics).to eq(expected_metrics)
     end
 
@@ -1052,10 +1055,10 @@ describe CheckCucumber do
       scenario[:steps] << {:result => {:duration => 0.5}}
       scenario[:steps] << {:result => {:duration => 1.5}}
       metrics = check_cucumber.generate_metrics_from_scenario(feature, scenario, :passed, 123)
-      expected_metrics = "example-metric-prefix.example-scenario-id.duration 2.0 123\n" +
-        "example-metric-prefix.example-scenario-id.step-count 2 123\n" +
-        "example-metric-prefix.example-scenario-id.step-1.duration 0.5 123\n" +
-        "example-metric-prefix.example-scenario-id.step-2.duration 1.5 123"
+      expected_metrics = "example-metric-prefix.example-scenario-id.duration 2.0 123\n" \
+        "example-metric-prefix.example-scenario-id.step-count 2 123\n" \
+        "example-metric-prefix.example-scenario-id.step-1.duration 0.5 123\n" \
+        'example-metric-prefix.example-scenario-id.step-2.duration 1.5 123'
       expect(metrics).to eq(expected_metrics)
     end
 
@@ -1087,9 +1090,9 @@ describe CheckCucumber do
       scenario[:steps] << {:result => {:duration => 0.5}}
       scenario[:steps] << {}
       metrics = check_cucumber.generate_metrics_from_scenario(feature, scenario, :passed, 123)
-      expected_metrics = "example-metric-prefix.example-scenario-id.duration 0.5 123\n" +
-        "example-metric-prefix.example-scenario-id.step-count 2 123\n" +
-        "example-metric-prefix.example-scenario-id.step-1.duration 0.5 123"
+      expected_metrics = "example-metric-prefix.example-scenario-id.duration 0.5 123\n" \
+        "example-metric-prefix.example-scenario-id.step-count 2 123\n" \
+        'example-metric-prefix.example-scenario-id.step-1.duration 0.5 123'
       expect(metrics).to eq(expected_metrics)
     end
 
@@ -1257,7 +1260,7 @@ def generate_feature(options = {})
     :name => "Feature #{feature_index}",
     :description => options[:feature_description] || "This is Feature #{feature_index}",
     :line => 1,
-    :keyword => "Feature",
+    :keyword => 'Feature',
     :uri => "features/feature-#{feature_index}.feature",
     :elements => []
   }
@@ -1266,16 +1269,16 @@ def generate_feature(options = {})
 
   if options[:has_background]
     feature[:elements] << {
-      :name => "Background 0",
-      :keyword => "Background",
-      :description => "This is Background 0",
-      :type => "background",
+      :name => 'Background 0',
+      :keyword => 'Background',
+      :description => 'This is Background 0',
+      :type => 'background',
       :line => 3,
       :steps => [
         {
-          :name => "a passing pre-condition",
+          :name => 'a passing pre-condition',
           :line => 4,
-          :keyword => "Given "
+          :keyword => 'Given '
         }
       ]
     }
@@ -1290,15 +1293,15 @@ def generate_feature(options = {})
       :line => 3,
       :keyword => "Scenario #{scenario_index}",
       :description => "This is Scenario #{scenario_index}",
-      :type => "scenario",
+      :type => 'scenario',
       :steps => []
     }
 
     Array(scenario_options[:step_statuses]).each_with_index do |step_status, step_index|
       step = {
-        :name => "example step",
+        :name => 'example step',
         :line => 4 + step_index,
-        :keyword => "Given ",
+        :keyword => 'Given ',
         :result => {
           :duration => step_index + 0.5,
           :status => step_status.to_s
@@ -1306,7 +1309,7 @@ def generate_feature(options = {})
         :match => {}
       }
 
-      if scenario_options.has_key?(:step_attachments)
+      if scenario_options.key?(:step_attachments)
         step_attachment_options = scenario_options[:step_attachments][step_index]
         step[:embeddings] = [
           {
@@ -1330,13 +1333,15 @@ def deep_dup(obj)
   Marshal.load(Marshal.dump(obj))
 end
 
+# #ORANGE
+# complexity to high (rubocop error)
 def generate_sensu_event(options = {})
   feature_index = options[:feature_index] || 0
   scenario_index = options[:scenario_index] || 0
   metric_prefix = options[:metric_prefix] || "example-metric-prefix.Feature-#{feature_index}.scenario-#{scenario_index}"
 
   feature = deep_dup(options[:results][feature_index])
-  scenarios = feature[:elements].select {|element| element[:type] == 'scenario'}
+  scenarios = feature[:elements].select { |element| element[:type] == 'scenario' }
   scenario = scenarios[scenario_index]
   feature[:elements] = [scenario]
 
@@ -1350,7 +1355,7 @@ def generate_sensu_event(options = {})
         has_durations = false
 
         scenario[:steps].each.with_index do |step, step_index|
-          if step.has_key?(:result)
+          if step.key?(:result)
             metrics << "#{metric_prefix}.step-#{step_index + 1}.duration #{step[:result][:duration]} 123"
             scenario_duration += step[:result][:duration]
             has_durations = true
@@ -1383,7 +1388,7 @@ def generate_sensu_event(options = {})
       steps = []
 
       Array(scenario[:steps]).each_with_index do |step, index|
-        status = step.has_key?(:result) ? step[:result][:status] : 'unknown'
+        status = step.key?(:result) ? step[:result][:status] : 'unknown'
 
         steps << {
           'step' => "#{status.upcase} - #{index + 1} - #{step[:keyword]}#{step[:name]}"
@@ -1415,7 +1420,7 @@ def generate_sensu_event(options = {})
         end
       end
 
-      if options.has_key?(:event_data)
+      if options.key?(:event_data)
         options[:event_data].each do |key, value|
           sensu_event[key] = value
         end
@@ -1436,10 +1441,10 @@ def generate_output(options = {})
   }
 
   [:scenarios, :passed, :failed, :pending, :undefined].each do |item|
-    output[item.to_s] = options[item] if options.has_key? item
+    output[item.to_s] = options[item] if options.key? item
   end
 
-  if options.has_key? :errors
+  if options.key? :errors
     errors = []
 
     Array(options[:errors]).each do |error|
@@ -1468,6 +1473,6 @@ end
 
 def normalize_errors(errors)
   errors.each do |error|
-    error['error']['backtrace'] = '<backtrace>' if error['error'].has_key? 'backtrace'
+    error['error']['backtrace'] = '<backtrace>' if error['error'].key? 'backtrace'
   end
 end

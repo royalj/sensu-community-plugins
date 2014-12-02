@@ -1,5 +1,6 @@
 #! /usr/bin/env ruby
 #
+# check-ses-limit
 #
 # DESCRIPTION:
 #   Checks how close you are getting in percentages to your 24 hour ses sending limit

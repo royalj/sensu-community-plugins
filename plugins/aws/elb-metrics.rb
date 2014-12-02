@@ -3,9 +3,12 @@
 # Fetch ELB metrics from CloudWatch
 #
 # DESCRIPTION:
+#   Gets latency metrics from CloudWatch and puts them in Graphite for longer term storage
+#   Returns latency statistics by default.  You can specify any valid ELB metric type, see
+#   http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/CW_Support_For_AWS.html#elb-metricscollected
 #
 # OUTPUT:
-#   plain-text
+#   metric data
 #
 # PLATFORMS:
 #   Linux
@@ -20,10 +23,6 @@
 # USAGE:
 #
 # NOTES:
-#   Gets latency metrics from CloudWatch and puts them in Graphite for longer term storage
-#   Returns latency statistics by default.  You can specify any valid ELB metric type, see
-#   http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/CW_Support_For_AWS.html#elb-metricscollected
-#
 #   By default fetches statistics from one minute ago.  You may need to fetch further back than this;
 #   high traffic ELBs can sometimes experience statistic delays of up to 10 minutes.  If you experience this,
 #   raising a ticket with AWS support should get the problem resolved.

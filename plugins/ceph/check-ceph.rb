@@ -1,19 +1,11 @@
 #! /usr/bin/env ruby
 #
-# Check the health status of a ceph cluster
+#   check-ceph
 #
 # DESCRIPTION:
 #   Runs 'ceph health' command(s) to report health status of ceph
-# cluster. May need read access to ceph keyring and/or root access
-# for authentication.
-#
-# Using -i (--ignore-flags) option allows specific options that are
-# normally considered Ceph warnings to be overlooked and considered
-# as 'OK' (e.g. noscrub,nodeep-scrub).
-#
-# Using -d (--detailed) and/or -o (--osd-tree) will dramatically increase
-# verboseness during warning/error reports, however they may add
-# additional insights to cluster-related problems during notification.
+#   cluster. May need read access to ceph keyring and/or root access
+#   for authentication.
 #
 # OUTPUT:
 #   plain-text
@@ -31,9 +23,16 @@
 # USAGE:
 #
 # NOTES:
+#   Using -i (--ignore-flags) option allows specific options that are
+#   normally considered Ceph warnings to be overlooked and considered
+#   as 'OK' (e.g. noscrub,nodeep-scrub).
+#
+#   Using -d (--detailed) and/or -o (--osd-tree) will dramatically increase
+#   verboseness during warning/error reports, however they may add
+#   additional insights to cluster-related problems during notification.
 #
 # LICENSE:
-# Copyright 2013 Brian Clark <brian.clark@cloudapt.com>
+#   Copyright 2013 Brian Clark <brian.clark@cloudapt.com>
 #   Released under the same terms as Sensu (the MIT license); see LICENSE
 #   for details.
 #

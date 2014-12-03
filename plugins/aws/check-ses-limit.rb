@@ -35,44 +35,43 @@ require 'sensu-plugin/check/cli'
 require 'aws/ses'
 
 class CheckSESLimit < Sensu::Plugin::Check::CLI
-
   option :aws_access_key,
-         :short       => '-a AWS_ACCESS_KEY',
-         :long        => '--aws-access-key AWS_ACCESS_KEY',
-         :description => "AWS Access Key. Either set ENV['AWS_ACCESS_KEY_ID'] or provide it as an option",
-         :required    => true
+         short: '-a AWS_ACCESS_KEY',
+         long: '--aws-access-key AWS_ACCESS_KEY',
+         description: "AWS Access Key. Either set ENV['AWS_ACCESS_KEY_ID'] or provide it as an option",
+         required: true
 
   option :aws_secret_access_key,
-         :short       => '-s AWS_SECRET_ACCESS_KEY',
-         :long        => '--aws-secret-access-key AWS_SECRET_ACCESS_KEY',
-         :description => "AWS Secret Access Key. Either set ENV['AWS_SECRET_ACCESS_KEY'] or provide it as an option",
-         :required    => true
+         short: '-s AWS_SECRET_ACCESS_KEY',
+         long: '--aws-secret-access-key AWS_SECRET_ACCESS_KEY',
+         description: "AWS Secret Access Key. Either set ENV['AWS_SECRET_ACCESS_KEY'] or provide it as an option",
+         required: true
 
   option :warn_percent,
-         :short => '-W WARN_PERCENT',
-         :long => '--warn_perc WARN_PERCENT',
-         :description => 'Warn when the percentage of mail sent is at or above this number',
-         :default => 75,
+         short: '-W WARN_PERCENT',
+         long: '--warn_perc WARN_PERCENT',
+         description: 'Warn when the percentage of mail sent is at or above this number',
+         default: 75,
          # #YELLOW
          # dont use block (rubocop error)
-         :proc => proc { |a| a.to_i }
+         proc: proc(&:to_i)
 
   option :crit_percent,
-         :short => '-C CRIT_PERCENT',
-         :long => '--crit_perc CRIT_PERCENT',
-         :description => 'Critical when the percentage of mail sent is at or above this number',
-         :default => 90,
+         short: '-C CRIT_PERCENT',
+         long: '--crit_perc CRIT_PERCENT',
+         description: 'Critical when the percentage of mail sent is at or above this number',
+         default: 90,
          # #YELLOW
          # dont use block (rubocop error)
-         :proc => proc { |a| a.to_i }
+         proc: proc(&:to_i)
 
   # #ORANGE
   # complexity to high (rubocop error)
   def run
     begin
       ses = AWS::SES::Base.new(
-        :access_key_id      => config[:aws_access_key],
-        :secret_access_key  => config[:aws_secret_access_key])
+        access_key_id: config[:aws_access_key],
+        secret_access_key: config[:aws_secret_access_key])
 
       response = ses.quota
     rescue AWS::SES::ResponseError => e
@@ -85,7 +84,7 @@ class CheckSESLimit < Sensu::Plugin::Check::CLI
       percent = (response.sent_last_24_hours.to_i / response.max_24_hour_send.to_i) * 100
       # #YELLOW
       # no need to convert to string (rubocop error)
-      message = "SES sending limit is at #{percent.to_s}%"
+      message = "SES sending limit is at #{percent}%"
 
       if config[:crit_percent] > 0 && config[:crit_percent] <= percent
         critical message

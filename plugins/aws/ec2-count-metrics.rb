@@ -31,37 +31,40 @@ require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/metric/cli'
 require 'aws-sdk'
 
+# #YELLOW
+# class docs
 class EC2Metrics < Sensu::Plugin::Metric::CLI::Graphite
-
   option :scheme,
-         :description => 'Metric naming scheme, text to prepend to metric',
-         :short       => '-s SCHEME',
-         :long        => '--scheme SCHEME',
-         :default     => 'sensu.aws.ec2'
+         description: 'Metric naming scheme, text to prepend to metric',
+         short: '-s SCHEME',
+         long: '--scheme SCHEME',
+         default: 'sensu.aws.ec2'
 
   option :aws_access_key,
-         :short       => '-a AWS_ACCESS_KEY',
-         :long        => '--aws-access-key AWS_ACCESS_KEY',
-         :description => "AWS Access Key. Either set ENV['AWS_ACCESS_KEY_ID'] or provide it as an option",
-         :required    => true
+         short: '-a AWS_ACCESS_KEY',
+         long: '--aws-access-key AWS_ACCESS_KEY',
+         description: "AWS Access Key. Either set ENV['AWS_ACCESS_KEY_ID'] \
+         or provide it as an option",
+         required: true
 
   option :aws_secret_access_key,
-         :short       => '-k AWS_SECRET_ACCESS_KEY',
-         :long        => '--aws-secret-access-key AWS_SECRET_ACCESS_KEY',
-         :description => "AWS Secret Access Key. Either set ENV['AWS_SECRET_ACCESS_KEY'] or provide it as an option",
-         :required    => true
+         short: '-k AWS_SECRET_ACCESS_KEY',
+         long: '--aws-secret-access-key AWS_SECRET_ACCESS_KEY',
+         description: "AWS Secret Access Key. Either set \
+         ENV['AWS_SECRET_ACCESS_KEY'] or provide it as an option",
+         required: true
 
   option :aws_region,
-         :short => '-r AWS_REGION',
-         :long => '--aws-region REGION',
-         :description => 'AWS Region (such as us-east-1).',
-         :default => 'us-east-1'
+         short: '-r AWS_REGION',
+         long: '--aws-region REGION',
+         description: 'AWS Region (such as us-east-1).',
+         default: 'us-east-1'
 
   option :type,
-         :short       => '-t METRIC type',
-         :long        => '--type METRIC type',
-         :description => 'Count by type: status, instance',
-         :default     => 'instance'
+         short: '-t METRIC type',
+         long: '--type METRIC type',
+         description: 'Count by type: status, instance',
+         default: 'instance'
 
   # #ORANGE
   # complexity to high (rubocop error)
@@ -71,21 +74,22 @@ class EC2Metrics < Sensu::Plugin::Metric::CLI::Graphite
       aws_debug = false
 
       AWS.config(
-        :region => config[:aws_region],
-        :access_key_id      => config[:aws_access_key],
-        :secret_access_key  => config[:aws_secret_access_key],
-        :http_wire_trace    => aws_debug
+        region: config[:aws_region],
+        access_key_id: config[:aws_access_key],
+        secret_access_key: config[:aws_secret_access_key],
+        http_wire_trace: aws_debug
       )
 
       client = AWS::EC2::Client.new
 
+      # #YELLOW
+      # method length
       def by_instances_status(client)
-
         if config[:scheme] == 'sensu.aws.ec2'
           config[:scheme] += '.count'
         end
 
-        options = {:include_all_instances => true}
+        options = { include_all_instances: true }
         data = client.describe_instance_status(options)
 
         total = data[:instance_status_set].count
@@ -112,9 +116,10 @@ class EC2Metrics < Sensu::Plugin::Metric::CLI::Graphite
           end
         end
       end
-
+      
+      # #YELLOW
+      # method length
       def by_instances_type(client)
-
         if config[:scheme] == 'sensu.aws.ec2'
           config[:scheme] += '.types'
         end
@@ -125,7 +130,7 @@ class EC2Metrics < Sensu::Plugin::Metric::CLI::Graphite
         instances[:reservation_set].each do |i|
           i[:instances_set].each do |instance|
             type = instance[:instance_type]
-            if data[type] == nil
+            if data[type].nil?
               data[type] = 1
             else
               data[type] = data[type] + 1
@@ -149,11 +154,10 @@ class EC2Metrics < Sensu::Plugin::Metric::CLI::Graphite
         by_instances_status(client)
       end
 
-    rescue Exception => e
+    rescue => e
       puts "Error: exception: #{e}"
       critical
     end
     ok
   end
-
 end

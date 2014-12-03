@@ -1,22 +1,12 @@
 #! /usr/bin/env ruby
-#  This plugin checks DHCP server responses.
-#  It must run as root to be able to bind to a listening port (udp 67 or 68)
-#  By default it will simply check for a response to a discover broadcast
-#  that is a valid DHCP::Message, ignoring contents.
 #
-# Author::    Matthew Richardson  (m.richardson@ed.ac.uk)
-# Copyright:: Copyright (c) 2002 The Pragmatic Programmers, LLC
-# License::   Released under the same terms as Sensu (the MIT license); see LICENSE
-#   for details.
-
-# This class holds the letters in the original
-# word or phrase. The is_anagram? method allows us
-# to test if subsequent words or phrases are
-# anagrams of the original.
-
+# check-dhcp
 #
 # DESCRIPTION:
-
+#   This class holds the letters in the original
+#   word or phrase. The is_anagram? method allows us
+#   to test if subsequent words or phrases are
+#   anagrams of the original.
 #
 # OUTPUT:
 #   plain-text

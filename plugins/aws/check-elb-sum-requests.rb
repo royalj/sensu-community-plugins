@@ -1,4 +1,4 @@
- #! /usr/bin/env ruby
+#! /usr/bin/env ruby
 #
 # check-elb-sum-requests
 #
@@ -109,7 +109,7 @@ class CheckELBLatency < Sensu::Plugin::Check::CLI
       start_time: config[:end_time] - config[:period],
       end_time:   config[:end_time],
       statistics: ['Sum'],
-      period:     config[:period],
+      period:     config[:period]
     }
   end
 
@@ -150,7 +150,7 @@ class CheckELBLatency < Sensu::Plugin::Check::CLI
     @severities =
     {
       critical: false,
-      warning:  false,
+      warning:  false
     }
 
     elbs.each { |elb| check_sum_requests elb }

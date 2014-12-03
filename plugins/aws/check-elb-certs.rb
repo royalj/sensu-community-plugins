@@ -36,54 +36,56 @@ require 'aws-sdk'
 require 'net/http'
 require 'openssl'
 
+# #YELLOW
+# class docs
 class CheckELBCerts < Sensu::Plugin::Check::CLI
-
   option :aws_access_key,
-         :short       => '-a AWS_ACCESS_KEY',
-         :long        => '--aws-access-key AWS_ACCESS_KEY',
-         :description => "AWS Access Key. Either set ENV['AWS_ACCESS_KEY_ID'] or provide it as an option",
-         :default     => ENV['AWS_ACCESS_KEY_ID']
+         short: '-a AWS_ACCESS_KEY',
+         long: '--aws-access-key AWS_ACCESS_KEY',
+         description: "AWS Access Key. Either set ENV['AWS_ACCESS_KEY_ID'] \
+         or provide it as an option",
+         default: ENV['AWS_ACCESS_KEY_ID']
 
   option :aws_secret_access_key,
-         :short       => '-s AWS_SECRET_ACCESS_KEY',
-         :long        => '--aws-secret-access-key AWS_SECRET_ACCESS_KEY',
-         :description => "AWS Secret Access Key. Either set ENV['AWS_SECRET_ACCESS_KEY'] or provide it as an option",
-         :default     => ENV['AWS_SECRET_ACCESS_KEY']
+         short: '-s AWS_SECRET_ACCESS_KEY',
+         long: '--aws-secret-access-key AWS_SECRET_ACCESS_KEY',
+         description: "AWS Secret Access Key. Either set \
+         ENV['AWS_SECRET_ACCESS_KEY'] or provide it as an option",
+         default: ENV['AWS_SECRET_ACCESS_KEY']
 
   option :aws_region,
-         :short       => '-r AWS_REGION',
-         :long        => '--aws-region REGION',
-         :description => 'AWS Region (such as eu-west-1).',
-         :default     => 'us-east-1'
+         short: '-r AWS_REGION',
+         long: '--aws-region REGION',
+         description: 'AWS Region (such as eu-west-1).',
+         default: 'us-east-1'
 
   option :warn_under,
-         :short       => '-w WARN_NUM',
-         :long        => '--warn WARN_NUM',
-         :description => 'Warn on minimum number of days to SSL/TLS certificate expiration',
-         :default     => 30,
-         # #YELLOW
-         # dont use block (rubocop error)
-         :proc        => proc { |a| a.to_i }
+         short: '-w WARN_NUM',
+         long: '--warn WARN_NUM',
+         description: 'Warn on minimum number of days to SSL/TLS certificate \
+         expiration',
+         default: 30,
+         proc: proc(&:to_i)
 
   option :crit_under,
-         :short       => '-c CRIT_NUM',
-         :long        => '--crit CRIT_NUM',
-         :description => 'Minimum number of days to SSL/TLS certificate expiration',
-         :default     => 5,
-         # #YELLOW
-         # dont use block (rubocop error)
-         :proc        => proc { |a| a.to_i }
+         short: '-c CRIT_NUM',
+         long: '--crit CRIT_NUM',
+         description: 'Minimum number of days to SSL/TLS certificate \
+         expiration',
+         default: 5,
+         proc: proc(&:to_i)
 
   option :verbose,
-         :short       => '-v',
-         :long        => '--verbose',
-         :description => 'Provide SSL/TLS certificate expiration details even when OK',
-         :default     => false
+         short: '-v',
+         long: '--verbose',
+         description: 'Provide SSL/TLS certificate expiration details even \
+         when OK',
+         default: false
 
   def cert_message(count, descriptor, limit)
     message = (count == 1 ? '1 ELB cert is ' : "#{count} ELB certs are ")
     message += "#{descriptor} #{limit} day"
-    message += (limit == 1 ? '' : 's') # rubocop:disable UselessAssignment
+    message += (limit == 1 ? '' : 's')
   end
 
   # #ORANGE
@@ -96,9 +98,9 @@ class CheckELBCerts < Sensu::Plugin::Check::CLI
     AWS.start_memoizing
 
     elb = AWS::ELB.new(
-      :access_key_id      => config[:aws_access_key],
-      :secret_access_key  => config[:aws_secret_access_key],
-      :region             => config[:aws_region])
+      access_key_id: config[:aws_access_key],
+      secret_access_key: config[:aws_secret_access_key],
+      region: config[:aws_region])
 
     begin
       elb.load_balancers.each do |lb|
@@ -114,15 +116,18 @@ class CheckELBCerts < Sensu::Plugin::Check::CLI
 
             begin
               http.start { cert = http.peer_cert }
-            rescue Exception => e
+            rescue => e
               critical "An issue occurred attempting to get cert: #{e.message}"
             end
 
-            cert_days_remaining = ((cert.not_after - Time.now) / 86400).to_i
+            cert_days_remaining = ((cert.not_after - Time.now) / 86_400).to_i
             message = sprintf '%s(%d)', lb.name, cert_days_remaining
-
+            # #YELLOW
+            # line length
             if config[:crit_under] > 0 && config[:crit_under] >= cert_days_remaining
               critical_message << message
+            # #YELLOW
+            # line length
             elsif config[:warn_under] > 0 && config[:warn_under] >= cert_days_remaining
               warning_message << message
             else
@@ -131,23 +136,28 @@ class CheckELBCerts < Sensu::Plugin::Check::CLI
           end
         end
       end
-    rescue Exception => e
+    rescue => e
       unknown "An error occurred processing AWS ELB API: #{e.message}"
     end
 
     if critical_message.length > 0
+      # #YELLOW
+      # line length
       message = cert_message(critical_message.length, 'expiring within', config[:crit_under])
       message += ': ' + critical_message.sort.join(' ')
       critical message
     elsif warning_message.length > 0
+      # #YELLOW
+      # line length
       message = cert_message(warning_message.length, 'expiring within', config[:warn_under])
       message += ': ' + warning_message.sort.join(' ')
       warning message
     else
+      # #YELLOW
+      # line length
       message = cert_message(ok_message.length, 'valid for at least', config[:warn_under])
       message += ': ' + ok_message.sort.join(' ') if config[:verbose]
       ok message
     end
   end
-
 end

@@ -33,6 +33,8 @@
 require 'sensu-plugin/check/cli'
 require 'aws-sdk'
 
+# #YELLOW
+# class docs
 class CheckEc2Network < Sensu::Plugin::Check::CLI
   option :access_key_id,
          short:       '-k N',
@@ -75,11 +77,14 @@ class CheckEc2Network < Sensu::Plugin::Check::CLI
   %w(warning critical).each do |severity|
     option :"#{severity}_over",
            long:        "--#{severity}-over COUNT",
-           description: "Trigger a #{severity} if network traffice is over specified Bytes"
+           description: "Trigger a #{severity} if network traffice is over \
+           specified Bytes"
   end
 
   def aws_config
     hash = {}
+    # #YELLOW
+    # line length
     hash.update access_key_id: config[:access_key_id], secret_access_key: config[:secret_access_key] if config[:access_key_id] && config[:secret_access_key]
     hash.update region: config[:region] if config[:region]
     hash
@@ -94,6 +99,8 @@ class CheckEc2Network < Sensu::Plugin::Check::CLI
   end
 
   def network_metric(instance)
+    # #YELLOW
+    # line length
     cloud_watch.metrics.with_namespace('AWS/EC2').with_metric_name("#{config[:direction]}").with_dimensions(name: 'InstanceId', value: instance).first
   end
 
@@ -111,7 +118,7 @@ class CheckEc2Network < Sensu::Plugin::Check::CLI
     # #YELLOW
     # use a guard clause (rubocop error)
     # non-nil check is not needed (rubocop error)
-    if value.datapoints[0] != nil
+    unless value.datapoints[0].nil?
       value.datapoints[0][:average].to_f
     end
   end
@@ -123,11 +130,9 @@ class CheckEc2Network < Sensu::Plugin::Check::CLI
 
   def run
     metric_value = check_metric config[:instance_id]
-    # #YELLOW
-    if metric_value != nil && metric_value > config[:critical_over].to_f
+    if !metric_value.nil? && metric_value > config[:critical_over].to_f
       critical "#{config[:direction]} at #{metric_value} Bytes"
-    # #YELLOW
-    elsif metric_value != nil && metric_value > config[:warning_over].to_f
+    elsif !metric_value.nil? && metric_value > config[:warning_over].to_f
       warning "#{config[:direction]} at #{metric_value} Bytes"
     else
       ok "#{config[:direction]} at #{metric_value} Bytes"

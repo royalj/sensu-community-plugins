@@ -73,7 +73,7 @@ class CheckRDS < Sensu::Plugin::Check::CLI
          short:       '-t T',
          long:        '--end-time TIME',
          default:     Time.now,
-         proc:        proc {|a| Time.parse a},
+         proc:        proc { |a| Time.parse a },
          description: 'CloudWatch metric statistics end time'
 
   option :period,
@@ -82,7 +82,7 @@ class CheckRDS < Sensu::Plugin::Check::CLI
          default:     60,
          # #YELLOW
          # dont use block (rubocop error)
-         proc:        proc { |a| a.to_i },
+         proc:        proc(&:to_i),
          description: 'CloudWatch metric statistics period'
 
   option :statistics,
@@ -102,7 +102,7 @@ class CheckRDS < Sensu::Plugin::Check::CLI
              long:        "--#{item}-#{severity}-over N",
              # #YELLOW
              # dont use block (rubocop error)
-             proc:        proc { |a| a.to_f },
+             proc:        proc(&:to_f),
              description: "Trigger a #{severity} if #{item} usage is over a percentage"
     end
   end
@@ -140,7 +140,7 @@ class CheckRDS < Sensu::Plugin::Check::CLI
       start_time: config[:end_time] - config[:period],
       end_time:   config[:end_time],
       statistics: [config[:statistics].to_s.capitalize],
-      period:     config[:period],
+      period:     config[:period]
     }
   end
 
@@ -172,10 +172,10 @@ class CheckRDS < Sensu::Plugin::Check::CLI
       'db.cr1.8xlarge' => 244.0,
       'db.m1.medium'   => 3.75,
       'db.m1.large'    => 7.5,
-      'db.m1.xlarge'   => 15.0,
+      'db.m1.xlarge'   => 15.0
     }
 
-    memory_total_gigabytes.fetch(instance_class) * 1024 ** 3
+    memory_total_gigabytes.fetch(instance_class) * 1024**3
   end
 
   def check_az(severity, expected_az)
@@ -189,7 +189,7 @@ class CheckRDS < Sensu::Plugin::Check::CLI
     return if @cpu_metric_value < expected_lower_than
     # #YELLOW
     # remove double quoted string if possible (rubocop error)
-    flag_alert severity, "; CPUUtilization is #{sprintf "%.2f", @cpu_metric_value}% (expected lower than #{expected_lower_than}%)"
+    flag_alert severity, "; CPUUtilization is #{sprintf '%.2f', @cpu_metric_value}% (expected lower than #{expected_lower_than}%)"
   end
 
   def check_memory(severity, expected_lower_than)
@@ -201,19 +201,19 @@ class CheckRDS < Sensu::Plugin::Check::CLI
     return if @memory_usage_percentage < expected_lower_than
     # #YELLOW
     # remove double quoted string if possible (rubocop error)
-    flag_alert severity, "; Memory usage is #{sprintf "%.2f", @memory_usage_percentage}% (expected lower than #{expected_lower_than}%)"
+    flag_alert severity, "; Memory usage is #{sprintf '%.2f', @memory_usage_percentage}% (expected lower than #{expected_lower_than}%)"
   end
 
   def check_disk(severity, expected_lower_than)
     @disk_metric           ||= cloud_watch_metric 'FreeStorageSpace'
     @disk_metric_value     ||= latest_value @disk_metric, 'Bytes'
-    @disk_total_bytes      ||= @db_instance.allocated_storage * 1024 ** 3
+    @disk_total_bytes      ||= @db_instance.allocated_storage * 1024**3
     @disk_usage_bytes      ||= @disk_total_bytes - @disk_metric_value
     @disk_usage_percentage ||= @disk_usage_bytes / @disk_total_bytes * 100
     return if @disk_usage_percentage < expected_lower_than
     # #YELLOW
     # remove double quoted string if possible (rubocop error)
-    flag_alert severity, "; Disk usage is #{sprintf "%.2f", @disk_usage_percentage}% (expected lower than #{expected_lower_than}%)"
+    flag_alert severity, "; Disk usage is #{sprintf '%.2f', @disk_usage_percentage}% (expected lower than #{expected_lower_than}%)"
   end
 
   def run
@@ -222,7 +222,7 @@ class CheckRDS < Sensu::Plugin::Check::CLI
     @severities   =
     {
       critical: false,
-      warning:  false,
+      warning:  false
     }
 
     @severities.keys.each do |severity|
@@ -235,7 +235,7 @@ class CheckRDS < Sensu::Plugin::Check::CLI
 
     # #YELLOW
     # use %w instead
-    if %w(cpu memory disk).any? { |item| %W(warning critical).any? { |severity| config[:"#{item}_#{severity}_over"] } }
+    if %w(cpu memory disk).any? { |item| %w(warning critical).any? { |severity| config[:"#{item}_#{severity}_over"] } }
       @message += "; (#{config[:statistics].to_s.capitalize} within #{config[:period]} seconds "
       @message += "between #{config[:end_time] - config[:period]} to #{config[:end_time]})"
     end

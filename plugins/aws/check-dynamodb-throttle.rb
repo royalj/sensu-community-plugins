@@ -18,7 +18,8 @@
 #
 # USAGE:
 #   Critical if session table's read throttle is over 50 for the last 5 minutes
-#   check-dynamodb-throttle --table_names session --throttle-for read --critical-over 50 --statistics sum --period 300
+#   check-dynamodb-throttle --table_names session --throttle-for read \
+#   --critical-over 50 --statistics sum --period 300
 #
 # NOTES:
 #
@@ -27,11 +28,14 @@
 #   Released under the same terms as Sensu (the MIT license); see LICENSE
 #   for details.
 #
-
+require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/check/cli'
 require 'aws-sdk'
 require 'time'
 
+# #YELLOW
+# needs docs
+# class too long
 class CheckDynamoDB < Sensu::Plugin::Check::CLI
   option :access_key_id,
          short:       '-k N',
@@ -52,7 +56,8 @@ class CheckDynamoDB < Sensu::Plugin::Check::CLI
          short:       '-t N',
          long:        '--table-names NAMES',
          proc:        proc { |a| a.split(/[,;]\s*/) },
-         description: 'Table names to check. Separated by , or ;. If not specified, check all tables'
+         description: "Table names to check. Separated by , or ;. \
+         If not specified, check all tables"
 
   option :end_time,
          short:       '-t T',
@@ -65,8 +70,6 @@ class CheckDynamoDB < Sensu::Plugin::Check::CLI
          short:       '-p N',
          long:        '--period SECONDS',
          default:     60,
-         # #YELLOW
-         # dont use block (rubocop error)
          proc:        proc(&:to_i),
          description: 'CloudWatch metric statistics period'
 
@@ -81,14 +84,14 @@ class CheckDynamoDB < Sensu::Plugin::Check::CLI
          short:       '-c N',
          long:        '--throttle-for NAME',
          default:     [:read, :write],
+         # #YELLOW
+         # line too long
          proc:        proc { |a| a.split(/[,;]\s*/).map { |n| n.downcase.intern } },
          description: 'Read/Write (or both) throttle to check.'
 
   %w(warning critical).each do |severity|
     option :"#{severity}_over",
            long:        "--#{severity}-over N",
-           # #YELLOW
-           # dont use block (rubocop error)
            proc:        proc(&:to_f),
            description: "Trigger a #{severity} if throttle is over the given number"
   end

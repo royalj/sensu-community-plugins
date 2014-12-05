@@ -83,7 +83,8 @@ class AutoScalingInstanceCountMetrics < Sensu::Plugin::Metric::CLI::Graphite
         region: config[:aws_region])
       # #YELLOW
       # line length
-      count = as.groups.get(config[:groupname]).instances.map(&:life_cycle_state).count('InService')
+      count = as.groups.get(config[:groupname]) \
+      .instances.map(&:life_cycle_state).count('InService')
       output graphitepath, count
 
     rescue => e

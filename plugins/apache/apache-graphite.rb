@@ -1,4 +1,4 @@
-#! /usr/bin/env ruby # rubocop:disable Style/FileName
+#! /usr/bin/env ruby
 #
 # apache-graphite
 #
@@ -57,12 +57,10 @@ class ApacheMetrics < Sensu::Plugin::Metric::CLI::Graphite
          default: '/server-status?auto'
 
   option :user,
-         short: '-user USER',
          long: '--user USER',
          description: 'User if HTTP Basic is used'
 
   option :password,
-         short: '-password USER',
          long: '--password USER',
          description: 'Password if HTTP Basic is used'
 
@@ -76,21 +74,23 @@ class ApacheMetrics < Sensu::Plugin::Metric::CLI::Graphite
          long: '--secure',
          description: 'Use SSL'
 
-  # #ORANGE
-  # high complexity
-  def mod_status
-    http = Net::HTTP.new(config[:host], config[:port])
+  def create_http_token
+    @http = Net::HTTP.new(config[:host], config[:port])
     if config[:secure]
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      http.use_ssl = true
+      @http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      @http.use_ssl = true
     end
-    req = Net::HTTP::Get.new(config[:path])
-    # #YELLOW
-    # non-nil checks are not needed
+    @req = Net::HTTP::Get.new(config[:path])
+    # #Yellow
+    # use guard clause
     if !config[:user].nil? && !config[:password].nil?
-      req.basic_auth config[:user], config[:password]
+      @req.basic_auth config[:user], config[:password]
     end
-    res = http.request(req)
+  end
+
+  def mod_status
+    create_http_token
+    res = @http.request(@req)
     case res.code
     when '200'
       res.body
@@ -101,7 +101,7 @@ class ApacheMetrics < Sensu::Plugin::Metric::CLI::Graphite
   end
 
   # #ORANGE
-  # complexity to high
+  # high complexity
   def run
     timestamp = Time.now.to_i
     stats = {}

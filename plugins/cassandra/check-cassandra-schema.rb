@@ -36,7 +36,6 @@ require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/check/cli'
 
 class CheckCassandraSchema < Sensu::Plugin::Check::CLI
-
   option :hostname,
          short:       '-h HOSTNAME',
          long:        '--host HOSTNAME',

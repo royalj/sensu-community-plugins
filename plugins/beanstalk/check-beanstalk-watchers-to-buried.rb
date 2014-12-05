@@ -33,29 +33,29 @@ require 'beanstalk-client'
 
 class CheckBeanstalkWatchersToBuried < Sensu::Plugin::Check::CLI
   option :host,
-         :short   => '-H HOST',
-         :default => 'localhost'
+         short: '-H HOST',
+         default: 'localhost'
 
   option :port,
-         :short   => '-p PORT',
-         :default => '11300'
+         short: '-p PORT',
+         default: '11300'
 
   option :tube,
-         :short   => '-t TUBE'
+         short: '-t TUBE'
 
   option :crit,
-         :short   => '-c CRIT_THRESHOLD',
+         short: '-c CRIT_THRESHOLD',
          # #YELLOW
          # dont use block (rubocop error)
-         :proc    => proc { |a| a.to_i },
-         :default => 0
+         proc: proc(&:to_i),
+         default: 0
 
   option :warn,
-         :short   => '-w WARN_THRESHOLD',
+         short: '-w WARN_THRESHOLD',
          # #YELLOW
          # dont use block (rubocop error)
-         :proc    => proc { |a| a.to_i },
-         :default => 0
+         proc: proc(&:to_i),
+         default: 0
 
   # #ORANGE
   # complexity to high (rubocop error)
@@ -65,7 +65,7 @@ class CheckBeanstalkWatchersToBuried < Sensu::Plugin::Check::CLI
       beanstalk = Beanstalk::Connection.new(
         "#{config[:host]}:#{config[:port]}"
       )
-    rescue Exception => e
+    rescue => e
       critical "Failed to connect: (#{e})"
     end
 
@@ -80,7 +80,7 @@ class CheckBeanstalkWatchersToBuried < Sensu::Plugin::Check::CLI
       watchers = 0
     end
 
-    if config[:crit] || (buried-watchers) > config[:crit]
+    if config[:crit] || (buried - watchers) > config[:crit]
       critical "Exceeded buried jobs by threshold of #{config[:crit]} (#{watchers}/#{buried})"
     elsif config[:warn] || (buried - watchers) > config[:warn]
       warning "Exceeded buried jobs by threshold of #{config[:warn]} (#{watchers}/#{buried})"

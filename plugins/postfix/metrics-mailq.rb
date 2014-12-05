@@ -24,7 +24,7 @@
 #   for details.
 #
 
-#!/usr/bin/env ruby
+# !/usr/bin/env ruby
 #
 # Postfix Mailq metrics
 # ===
@@ -51,18 +51,17 @@ require 'sensu-plugin/metric/cli'
 require 'socket'
 
 class PostfixMailqMetrics < Sensu::Plugin::Metric::CLI::Graphite
-
   option :path,
-    :short => '-p MAILQ_PATH',
-    :long => '--path MAILQ_PATH',
-    :description => 'Path to the postfix mailq binary.  Defaults to /usr/bin/mailq',
-    :default => '/usr/bin/mailq'
+         short: '-p MAILQ_PATH',
+         long: '--path MAILQ_PATH',
+         description: 'Path to the postfix mailq binary.  Defaults to /usr/bin/mailq',
+         default: '/usr/bin/mailq'
 
   option :scheme,
-    :description => "Metric naming scheme, text to prepend to metric",
-    :short => "-s SCHEME",
-    :long => "--scheme SCHEME",
-    :default => "#{Socket.gethostname}.tcp"
+         description: 'Metric naming scheme, text to prepend to metric',
+         short: '-s SCHEME',
+         long: '--scheme SCHEME',
+         default: "#{Socket.gethostname}.tcp"
 
   def run
     timestamp = Time.now.to_i
@@ -77,5 +76,4 @@ class PostfixMailqMetrics < Sensu::Plugin::Metric::CLI::Graphite
     output "#{graphite_name}", num_messages, timestamp
     ok
   end
-
 end

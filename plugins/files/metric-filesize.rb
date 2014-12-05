@@ -24,7 +24,7 @@
 #   for details.
 #
 
-#!/usr/bin/env ruby
+# !/usr/bin/env ruby
 #
 # Filesize metrics
 # ===
@@ -44,36 +44,34 @@ require 'socket'
 require 'sensu-plugin/metric/cli'
 
 class FilesizeMetrics < Sensu::Plugin::Metric::CLI::Graphite
-
   option :filepath,
-    :short => '-f PATH',
-    :long => '--file PATH',
-    :description => 'Absolute path to file to measure',
-    :required => true
+         short: '-f PATH',
+         long: '--file PATH',
+         description: 'Absolute path to file to measure',
+         required: true
 
   option :omitblocks,
-    :short => '-o',
-    :long => '--blocksno',
-    :description => 'Don\'t report size in blocks',
-    :required => true,
-    :default => false
+         short: '-o',
+         long: '--blocksno',
+         description: 'Don\'t report size in blocks',
+         required: true,
+         default: false
 
   option :omitbytes,
-    :short => '-b',
-    :long => '--bytesno',
-    :description => 'Don\'t report size in bytes',
-    :required => true,
-    :default => false
+         short: '-b',
+         long: '--bytesno',
+         description: 'Don\'t report size in bytes',
+         required: true,
+         default: false
 
   option :scheme,
-    :description => "Metric naming scheme, text to prepend to metric",
-    :short => "-s SCHEME",
-    :long => "--scheme SCHEME",
-    :required => true,
-    :default => "#{Socket.gethostname}.filesize"
+         description: 'Metric naming scheme, text to prepend to metric',
+         short: '-s SCHEME',
+         long: '--scheme SCHEME',
+         required: true,
+         default: "#{Socket.gethostname}.filesize"
 
   def run
-
     cmd = "/usr/bin/stat --format=\"%s,%b,\" #{config[:filepath]}"
     output = `#{cmd}`
 
@@ -87,5 +85,4 @@ class FilesizeMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
     ok
   end
-
 end

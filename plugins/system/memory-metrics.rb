@@ -24,19 +24,18 @@
 #   for details.
 #
 
-#!/usr/bin/env ruby
+# !/usr/bin/env ruby
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/metric/cli'
 require 'socket'
 
 class MemoryGraphite < Sensu::Plugin::Metric::CLI::Graphite
-
   option :scheme,
-    :description => "Metric naming scheme, text to prepend to metric",
-    :short => "-s SCHEME",
-    :long => "--scheme SCHEME",
-    :default => "#{Socket.gethostname}.memory"
+         description: 'Metric naming scheme, text to prepend to metric',
+         short: '-s SCHEME',
+         long: '--scheme SCHEME',
+         default: "#{Socket.gethostname}.memory"
 
   def run
     # Metrics borrowed from hoardd: https://github.com/coredump/hoardd
@@ -72,6 +71,6 @@ class MemoryGraphite < Sensu::Plugin::Metric::CLI::Graphite
   end
 
   def meminfo_output
-    File.open("/proc/meminfo", "r")
+    File.open('/proc/meminfo', 'r')
   end
 end

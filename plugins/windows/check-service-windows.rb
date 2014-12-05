@@ -24,7 +24,7 @@
 #   for details.
 #
 
-#!/usr/bin/env ruby
+# !/usr/bin/env ruby
 #
 # Check Named Windows Service Plugin
 # This plugin checks whether a User-inputted service on Windows is running or not
@@ -40,19 +40,18 @@ require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/check/cli'
 
 class CheckDatabase < Sensu::Plugin::Check::CLI
-
-  option :service ,
-    :description => 'Check for a specific service',
-    :long => '--service SERVICE',
-    :short => '-s SERVICE'
+  option :service,
+         description: 'Check for a specific service',
+         long: '--service SERVICE',
+         short: '-s SERVICE'
 
   def run
-    temp = system("tasklist /svc|findstr /i "+config[:service])
+    temp = system('tasklist /svc|findstr /i ' + config[:service])
     if temp == false
-      message config[:service]+ " is not running"
+      message config[:service] + ' is not running'
       critical
     else
-      message config[:service]+ " is running"
+      message config[:service] + ' is running'
       ok
     end
   end

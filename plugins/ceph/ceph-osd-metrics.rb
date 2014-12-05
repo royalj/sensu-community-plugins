@@ -43,17 +43,16 @@ require 'json'
 require 'English'
 
 class CephOsdMetrics < Sensu::Plugin::Metric::CLI::Graphite
-
   option :scheme,
-         :description => 'Metric naming scheme, text prepended to .$parent.$child',
-         :long        => '--scheme SCHEME',
-         :default     => 'ceph.osd'
+         description: 'Metric naming scheme, text prepended to .$parent.$child',
+         long: '--scheme SCHEME',
+         default: 'ceph.osd'
 
   option :pattern,
-         :description => 'Search pattern for sockets (/var/run/ceph/ceph-osd.*.asok)',
-         :short       => '-p',
-         :long        => '--pattern',
-         :default     => '/var/run/ceph/ceph-osd.*.asok'
+         description: 'Search pattern for sockets (/var/run/ceph/ceph-osd.*.asok)',
+         short: '-p',
+         long: '--pattern',
+         default: '/var/run/ceph/ceph-osd.*.asok'
 
   def output_data(h, leader)
     h.each_pair do |key, val|

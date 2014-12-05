@@ -36,27 +36,26 @@ require 'sensu-plugin/check/cli'
 require 'chef'
 
 class ChefNodesStatusChecker < Sensu::Plugin::Check::CLI
-
   option :critical_timespan,
-         :description => 'Amount of seconds after which node considered as stuck',
-         :short       => '-t CRITICAL-TIMESPAN',
-         :long        => '--timespan CRITICAL-TIMESPAN',
-         :default     => (600 + 300.0 + 60*3)
+         description: 'Amount of seconds after which node considered as stuck',
+         short: '-t CRITICAL-TIMESPAN',
+         long: '--timespan CRITICAL-TIMESPAN',
+         default: (600 + 300.0 + 60 * 3)
 
   option :chef_server_url,
-         :description => 'URL of Chef server',
-         :short       => '-U CHEF-SERVER-URL',
-         :long        => '--url CHEF-SERVER-URL'
+         description: 'URL of Chef server',
+         short: '-U CHEF-SERVER-URL',
+         long: '--url CHEF-SERVER-URL'
 
   option :client_name,
-         :description => 'Client name',
-         :short       => '-C CLIENT-NAME',
-         :long        => '--client CLIENT-NAME'
+         description: 'Client name',
+         short: '-C CLIENT-NAME',
+         long: '--client CLIENT-NAME'
 
   option :key,
-         :description => 'Client\'s key',
-         :short       => '-K CLIENT-KEY',
-         :long        => '--keys CLIENT-KEY'
+         description: 'Client\'s key',
+         short: '-K CLIENT-KEY',
+         long: '--keys CLIENT-KEY'
 
   def connection
     @connection ||= chef_api_connection
@@ -75,13 +74,11 @@ class ChefNodesStatusChecker < Sensu::Plugin::Check::CLI
   end
 
   def run
-
     if any_node_stuck?
       ok 'Chef Server API is ok, all nodes reporting'
     else
       critical "The following nodes cannot be provisioned: #{failed_nodes_names}"
     end
-
   end
 
   private
@@ -101,5 +98,4 @@ class ChefNodesStatusChecker < Sensu::Plugin::Check::CLI
     all_failed_tuples = nodes_last_seen.select { |node_set| node_set.values.first == true }
     all_failed_tuples.map(&:keys).flatten.join(', ')
   end
-
 end

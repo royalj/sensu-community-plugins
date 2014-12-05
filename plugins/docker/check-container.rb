@@ -24,7 +24,7 @@
 #   for details.
 #
 
-#!/usr/bin/env ruby
+# !/usr/bin/env ruby
 #
 # Checks that a given Docker container is running
 # ===
@@ -60,9 +60,9 @@ require 'docker'
 
 class CheckDockerContainer < Sensu::Plugin::Check::CLI
   option :url,
-    short: '-u DOCKER_HOST',
-    long: '--host DOCKER_HOST',
-    default: "tcp://127.0.0.1:4243/"
+         short: '-u DOCKER_HOST',
+         long: '--host DOCKER_HOST',
+         default: 'tcp://127.0.0.1:4243/'
 
   def run
     Docker.url = "#{config[:url]}"
@@ -70,7 +70,7 @@ class CheckDockerContainer < Sensu::Plugin::Check::CLI
     id = argv.first
     container = Docker::Container.get(id)
 
-    if container.info["State"]["Running"]
+    if container.info['State']['Running']
       ok
     else
       critical "#{id} is not running"
@@ -78,7 +78,7 @@ class CheckDockerContainer < Sensu::Plugin::Check::CLI
   rescue Docker::Error::NotFoundError
     critical "#{id} is not running on the host"
   rescue Excon::Errors::SocketError
-    warning "unable to connect to Docker"
+    warning 'unable to connect to Docker'
   rescue => e
     warning "unknown error #{e.inspect}"
   end

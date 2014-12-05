@@ -24,7 +24,7 @@
 #   for details.
 #
 
-#!/usr/bin/env ruby
+# !/usr/bin/env ruby
 #
 # Push Apache Solr stats into graphite
 # ===
@@ -42,7 +42,6 @@ require 'rest-client'
 require 'json'
 
 class Solr4Graphite < Sensu::Plugin::Metric::CLI::Graphite
-
   option :host,
          short:       '-h HOST',
          long:        '--host HOST',
@@ -53,7 +52,7 @@ class Solr4Graphite < Sensu::Plugin::Metric::CLI::Graphite
          short:        '-p PORT',
          long:         '--port PORT',
          description:  'Solr Port to connect to',
-         proc:         proc { |p| p.to_i },
+         proc:         proc(&:to_i),
          required:     true
 
   option :scheme,
@@ -63,24 +62,22 @@ class Solr4Graphite < Sensu::Plugin::Metric::CLI::Graphite
          default:      "#{Socket.gethostname}.solr"
 
   def get_url_json(url)
-    begin
-      r = RestClient::Resource.new(url, timeout: 45)
-      JSON.parse(r.get)
-    rescue Errno::ECONNREFUSED
-      warning 'Connection refused'
-    rescue RestClient::RequestTimeout
-      warning 'Connection timed out'
-    rescue RestClient::ResourceNotFound
-      warning "404 resource not found - #{url}"
-    rescue => e
-      warning "RestClient exception: #{e.class} -> #{e.message}"
-    end
+    r = RestClient::Resource.new(url, timeout: 45)
+    JSON.parse(r.get)
+  rescue Errno::ECONNREFUSED
+    warning 'Connection refused'
+  rescue RestClient::RequestTimeout
+    warning 'Connection timed out'
+  rescue RestClient::ResourceNotFound
+    warning "404 resource not found - #{url}"
+  rescue => e
+    warning "RestClient exception: #{e.class} -> #{e.message}"
   end
 
   def run
     graphite_path = config[:scheme]
 
-     # Process core stats
+    # Process core stats
     core_json = get_url_json "http://#{config[:host]}:#{config[:port]}/solr/admin/cores?stats=true&wt=json"
 
     output "#{graphite_path}.Status", core_json['responseHeader']['status']
@@ -111,7 +108,7 @@ class Solr4Graphite < Sensu::Plugin::Metric::CLI::Graphite
       graphite_path += ".#{collection}.#{shard}"
 
       mbeans_json['solr-mbeans']['CORE']['searcher']['stats'].each do |stat, value|
-        output "#{graphite_path}.searcher.#{stat}", value if value.kind_of?(Numeric)
+        output "#{graphite_path}.searcher.#{stat}", value if value.is_a?(Numeric)
       end
 
       # query handler stats
@@ -119,17 +116,17 @@ class Solr4Graphite < Sensu::Plugin::Metric::CLI::Graphite
         '/update'       => 'updates',
         '/query'        => 'queries',
         '/select'       => 'selects',
-        '/replication'  => 'replication',
+        '/replication'  => 'replication'
       }.each do |hash_node, graphite_node|
         next unless mbeans_json['solr-mbeans']['QUERYHANDLER'][hash_node]
         mbeans_json['solr-mbeans']['QUERYHANDLER'][hash_node]['stats'].each do |stat, value|
-          output "#{graphite_path}.queryHandler.#{graphite_node}.#{stat}", value if value.kind_of?(Numeric)
+          output "#{graphite_path}.queryHandler.#{graphite_node}.#{stat}", value if value.is_a?(Numeric)
           output "#{graphite_path}.queryHandler.replication.#{stat}", (value.to_f * 1_073_741_824).to_i if value =~ /\d+\.?\d* GB/
         end
       end
 
       mbeans_json['solr-mbeans']['UPDATEHANDLER']['updateHandler']['stats'].each do |stat, value|
-        output "#{graphite_path}.updateHandler.#{stat.gsub(' ', '_')}", value if value.kind_of?(Numeric)
+        output "#{graphite_path}.updateHandler.#{stat.gsub(' ', '_')}", value if value.is_a?(Numeric)
       end
 
       # cache stats
@@ -142,7 +139,7 @@ class Solr4Graphite < Sensu::Plugin::Metric::CLI::Graphite
       }.each do |hash_node, graphite_node|
         next unless mbeans_json['solr-mbeans']['CACHE'][hash_node]
         mbeans_json['solr-mbeans']['CACHE'][hash_node]['stats'].each do |stat, value|
-          output "#{graphite_path}.cache.#{graphite_node}.#{stat}", value if value.kind_of?(Numeric)
+          output "#{graphite_path}.cache.#{graphite_node}.#{stat}", value if value.is_a?(Numeric)
         end
       end
     end

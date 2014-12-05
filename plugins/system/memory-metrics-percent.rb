@@ -24,19 +24,18 @@
 #   for details.
 #
 
-#!/usr/bin/env ruby
+# !/usr/bin/env ruby
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/metric/cli'
 require 'socket'
 
 class MemoryGraphite < Sensu::Plugin::Metric::CLI::Graphite
-
   option :scheme,
-    :description => "Metric naming scheme, text to prepend to metric",
-    :short => "-s SCHEME",
-    :long => "--scheme SCHEME",
-    :default => "#{Socket.gethostname}.memory_percent"
+         description: 'Metric naming scheme, text to prepend to metric',
+         short: '-s SCHEME',
+         long: '--scheme SCHEME',
+         default: "#{Socket.gethostname}.memory_percent"
 
   def run
     # Based on memory-metrics.rb
@@ -78,18 +77,18 @@ class MemoryGraphite < Sensu::Plugin::Metric::CLI::Graphite
       swptot = mem['swapTotal']
     end
 
-    mem.each do |k, v|
+    mem.each do |k, _v|
       # with percentages, used and free are exactly complementary
       # no need to have both
       # the one to drop here is "used" because "free" will
       # stack up neatly to 100% with all the others (except swapUsed)
-      if k != "total" && k !~ /swap/ && k != "used"
+      if k != 'total' && k !~ /swap/ && k != 'used'
         memp[k] = 100.0 * mem[k] / mem['total']
       end
 
       # with percentages, swapUsed and swapFree are exactly complementary
       # no need to have both
-      if k != "swapTotal" && k =~ /swap/ && k != "swapFree"
+      if k != 'swapTotal' && k =~ /swap/ && k != 'swapFree'
         memp[k] = 100.0 * mem[k] / swptot
       end
     end
@@ -98,6 +97,6 @@ class MemoryGraphite < Sensu::Plugin::Metric::CLI::Graphite
   end
 
   def meminfo_output
-    File.open("/proc/meminfo", "r")
+    File.open('/proc/meminfo', 'r')
   end
 end

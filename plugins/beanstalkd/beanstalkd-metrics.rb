@@ -36,7 +36,6 @@ require 'beaneater'
 
 # Checks the queue levels
 class BeanstalkdMetrics < Sensu::Plugin::Metric::CLI::Graphite
-
   option :server,
          description: 'beanstalkd server',
          short:       '-s SERVER',
@@ -50,10 +49,10 @@ class BeanstalkdMetrics < Sensu::Plugin::Metric::CLI::Graphite
          default:     '11300'
 
   option :scheme,
-         :description => 'Metric naming scheme, text to prepend to metric',
-         :short => '-s SCHEME',
-         :long => '--scheme SCHEME',
-         :default => "#{Socket.gethostname}.beanstalkd"
+         description: 'Metric naming scheme, text to prepend to metric',
+         short: '-s SCHEME',
+         long: '--scheme SCHEME',
+         default: "#{Socket.gethostname}.beanstalkd"
 
   def get_beanstalkd_connection
     begin

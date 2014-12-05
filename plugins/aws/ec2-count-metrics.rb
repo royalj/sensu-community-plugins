@@ -116,7 +116,7 @@ class EC2Metrics < Sensu::Plugin::Metric::CLI::Graphite
           end
         end
       end
-      
+
       # #YELLOW
       # method length
       def by_instances_type(client)

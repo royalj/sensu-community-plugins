@@ -24,7 +24,7 @@
 #   for details.
 #
 
-#!/usr/bin/env ruby
+# !/usr/bin/env ruby
 # Check-imap
 # ===
 #
@@ -50,37 +50,34 @@ require 'net/imap'
 require 'timeout'
 
 class CheckIMAP < Sensu::Plugin::Check::CLI
-
   option :host,
-    :short => '-h host',
-    :default => "127.0.0.1"
+         short: '-h host',
+         default: '127.0.0.1'
 
   option :mech,
-    :short => '-m mech',
-    :default => 'plain'
+         short: '-m mech',
+         default: 'plain'
 
   option :user,
-    :short => '-u user',
-    :default => "test"
+         short: '-u user',
+         default: 'test'
 
   option :pass,
-    :short => '-p pass',
-    :default => "yoda"
+         short: '-p pass',
+         default: 'yoda'
 
   def run
-    begin
-      Timeout.timeout(15) do
-        imap = Net::IMAP.new("#{config[:host]}")
-        status = imap.authenticate("#{config[:mech]}", "#{config[:user]}", "#{config[:pass]}")
-        unless status == nil
-        ok "IMAP SERVICE WORKS FINE"
+    Timeout.timeout(15) do
+      imap = Net::IMAP.new("#{config[:host]}")
+      status = imap.authenticate("#{config[:mech]}", "#{config[:user]}", "#{config[:pass]}")
+      unless status.nil?
+        ok 'IMAP SERVICE WORKS FINE'
         imap.disconnect
-        end
       end
-      rescue Timeout::Error
-      critical "IMAP Connection timed out"
-      rescue => e
-      critical "Connection error: #{e.message}"
     end
+    rescue Timeout::Error
+      critical 'IMAP Connection timed out'
+    rescue => e
+      critical "Connection error: #{e.message}"
   end
 end

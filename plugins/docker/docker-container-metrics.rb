@@ -24,8 +24,7 @@
 #   for details.
 #
 
-
-#!/usr/bin/env ruby
+# !/usr/bin/env ruby
 #
 # Push docker stats into graphite
 # ===
@@ -68,18 +67,17 @@ require 'pathname'
 require 'sys/proctable'
 
 class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
-
   option :scheme,
-         :description => 'Metric naming scheme, text to prepend to metric',
-         :short => '-s SCHEME',
-         :long => '--scheme SCHEME',
-         :default => "docker.#{Socket.gethostname}"
+         description: 'Metric naming scheme, text to prepend to metric',
+         short: '-s SCHEME',
+         long: '--scheme SCHEME',
+         default: "docker.#{Socket.gethostname}"
 
   option :cgroup_path,
-         :description => 'path to cgroup mountpoint',
-         :short => '-c PATH',
-         :long => '--cgroup PATH',
-         :default => '/sys/fs/cgroup'
+         description: 'path to cgroup mountpoint',
+         short: '-c PATH',
+         long: '--cgroup PATH',
+         default: '/sys/fs/cgroup'
 
   option :docker_host,
          description: 'docker host',

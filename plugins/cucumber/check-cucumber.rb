@@ -43,60 +43,60 @@ class CheckCucumber < Sensu::Plugin::Check::CLI
   INFINITE_TIMEOUT = 0
 
   option :name,
-         :description => 'Name to use in sensu events',
-         :short       => '-n NAME',
-         :long        => '--name NAME'
+         description: 'Name to use in sensu events',
+         short: '-n NAME',
+         long: '--name NAME'
 
   option :handler,
-         :description => 'Handler to use for sensu events',
-         :short       => '-h HANDLER',
-         :long        => '--handler HANDLER'
+         description: 'Handler to use for sensu events',
+         short: '-h HANDLER',
+         long: '--handler HANDLER'
 
   option :metric_handler,
-         :description => 'Handler to use for metric events',
-         :short       => '-m HANDLER',
-         :long        => '--metric-handler HANDLER'
+         description: 'Handler to use for metric events',
+         short: '-m HANDLER',
+         long: '--metric-handler HANDLER'
 
   option :metric_prefix,
-         :description => 'Metric prefix to use with metric paths in sensu events',
-         :short       => '-p METRIC_PREFIX',
-         :long        => '--metric-prefix METRIC_PREFIX'
+         description: 'Metric prefix to use with metric paths in sensu events',
+         short: '-p METRIC_PREFIX',
+         long: '--metric-prefix METRIC_PREFIX'
 
   option :command,
-         :description => 'Cucumber command line, including arguments',
-         :short       => '-c COMMAND',
-         :long        => '--command COMMAND'
+         description: 'Cucumber command line, including arguments',
+         short: '-c COMMAND',
+         long: '--command COMMAND'
 
   option :working_dir,
-         :description => 'Working directory to use with Cucumber',
-         :short       => '-w WORKING_DIR',
-         :long        => '--working-dir WORKING_DIR'
+         description: 'Working directory to use with Cucumber',
+         short: '-w WORKING_DIR',
+         long: '--working-dir WORKING_DIR'
 
   option :timeout,
-         :description => 'Amount of seconds to wait for Cucumber to wait before killing the Cucumber process',
-         :short       => '-t TIMEOUT',
-         :long        => '--timeout TIMEOUT'
+         description: 'Amount of seconds to wait for Cucumber to wait before killing the Cucumber process',
+         short: '-t TIMEOUT',
+         long: '--timeout TIMEOUT'
 
   option :env,
-         :description => 'Environment variable to pass to Cucumber. Can be specified more than once to set multiple environment variables',
-         :short       => '-n NAME=VALUE',
-         :long        => '--env NAME=VALUE'
+         description: 'Environment variable to pass to Cucumber. Can be specified more than once to set multiple environment variables',
+         short: '-n NAME=VALUE',
+         long: '--env NAME=VALUE'
 
   option :event_data,
-         :description => 'Used to add custom data to the sensu events that are raised.  Can be specified more than once to set multiple data items',
-         :short       => '-d NAME=VALUE',
-         :long        => '--event-data NAME=VALUE'
+         description: 'Used to add custom data to the sensu events that are raised.  Can be specified more than once to set multiple data items',
+         short: '-d NAME=VALUE',
+         long: '--event-data NAME=VALUE'
 
   option :attachments,
-         :description => 'Specifies whether Cucumber attachments should be included in sensu events. ' \
+         description: 'Specifies whether Cucumber attachments should be included in sensu events. ' \
         'Cucumber attachments can be multi-megabyte if they include screenshots',
-         :short       => '-a BOOLEAN',
-         :long        => '--attachments BOOLEAN'
+         short: '-a BOOLEAN',
+         long: '--attachments BOOLEAN'
 
   option :debug,
-         :description => 'Print debug information',
-         :long        => '--debug',
-         :boolean     => true
+         description: 'Print debug information',
+         long: '--debug',
+         boolean: true
 
   def parse_options(argv)
     env = {}
@@ -142,7 +142,7 @@ class CheckCucumber < Sensu::Plugin::Check::CLI
       return
     end
 
-    results = JSON.parse(result[:results], :symbolize_names => true)
+    results = JSON.parse(result[:results], symbolize_names: true)
 
     outcome = :ok
     scenario_count = 0
@@ -366,7 +366,7 @@ class CheckCucumber < Sensu::Plugin::Check::CLI
     begin
       begin
         Timeout.timeout(timeout) do
-          pipe = IO.popen(env, command, :chdir => working_dir, :external_encoding => Encoding::UTF_8)
+          pipe = IO.popen(env, command, chdir: working_dir, external_encoding: Encoding::UTF_8)
           results = pipe.read
         end
       rescue Timeout::Error
@@ -377,7 +377,7 @@ class CheckCucumber < Sensu::Plugin::Check::CLI
       pipe.close unless pipe.nil?
     end
 
-    {:results => results, :exit_status => $?.exitstatus}
+    { results: results, exit_status: $CHILD_STATUS.exitstatus }
   end
 
   def send_sensu_event(data)
@@ -416,11 +416,11 @@ class CheckCucumber < Sensu::Plugin::Check::CLI
     end
 
     sensu_event = {
-      :name     => event_name,
-      :handlers => [config[:handler]],
-      :status   => scenario_status_code,
-      :output   => scenario_output,
-      :results  => scenario_results
+      name: event_name,
+      handlers: [config[:handler]],
+      status: scenario_status_code,
+      output: scenario_output,
+      results: scenario_results
     }
 
     config[:event_data].each do |key, value|
@@ -441,11 +441,11 @@ class CheckCucumber < Sensu::Plugin::Check::CLI
 
   def generate_metric_event(event_name, metrics)
     metric_event = {
-      :name     => "#{event_name}.metrics",
-      :type     => 'metric',
-      :handlers => [config[:metric_handler]],
-      :output   => metrics,
-      :status   => 0
+      name: "#{event_name}.metrics",
+      type: 'metric',
+      handlers: [config[:metric_handler]],
+      output: metrics,
+      status: 0
     }
 
     metric_event
@@ -460,7 +460,7 @@ class CheckCucumber < Sensu::Plugin::Check::CLI
       if step.key? :result
         step_status = step[:result][:status]
 
-        if ['failed', 'pending', 'undefined'].include? step_status
+        if %w(failed pending undefined).include? step_status
           scenario_status = step_status.to_sym
           break
         end
@@ -518,5 +518,4 @@ class CheckCucumber < Sensu::Plugin::Check::CLI
   def escape_unicode_characters_in_json(json)
     json.unpack('U*').map { |i| i < 128 ? i.chr : "\\u#{i.to_s(16).rjust(4, '0')}" }.join
   end
-
 end

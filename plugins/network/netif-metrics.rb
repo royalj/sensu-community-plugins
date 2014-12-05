@@ -24,7 +24,7 @@
 #   for details.
 #
 
-#!/usr/bin/env ruby
+# !/usr/bin/env ruby
 #
 # Network interface throughput
 # ===
@@ -41,11 +41,10 @@ require 'sensu-plugin/metric/cli'
 require 'socket'
 
 class NetIFMetrics < Sensu::Plugin::Metric::CLI::Graphite
-
   option :scheme,
-    :description => "Metric naming scheme, text to prepend to .$parent.$child",
-    :long => "--scheme SCHEME",
-    :default => "#{Socket.gethostname}"
+         description: 'Metric naming scheme, text to prepend to .$parent.$child',
+         long: '--scheme SCHEME',
+         default: "#{Socket.gethostname}"
 
   def run
     `sar -n DEV 1 1 | grep Average | grep -v IFACE`.each_line do |line|
@@ -59,7 +58,5 @@ class NetIFMetrics < Sensu::Plugin::Metric::CLI::Graphite
     end
 
     ok
-
   end
-
 end

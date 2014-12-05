@@ -83,7 +83,6 @@ UNITS_FACTOR = {
 }
 
 class CassandraMetrics < Sensu::Plugin::Metric::CLI::Graphite
-
   option :hostname,
          short:       '-h HOSTNAME',
          long:        '--host HOSTNAME',
@@ -326,7 +325,6 @@ class CassandraMetrics < Sensu::Plugin::Metric::CLI::Graphite
   # #YELLOW
   # complexity to high (rubocop error)
   def parse_cfstats
-
     def get_metric(string)
       string.strip!
       (metric, value) = string.split(': ')
@@ -385,5 +383,4 @@ class CassandraMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
     ok
   end
-
 end

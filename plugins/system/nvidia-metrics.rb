@@ -24,7 +24,7 @@
 #   for details.
 #
 
-#!/usr/bin/env ruby
+# !/usr/bin/env ruby
 #
 # NVidia Graphics Card Metric Plugin
 # ===
@@ -48,12 +48,11 @@ require 'sensu-plugin/metric/cli'
 require 'socket'
 
 class EntropyGraphite < Sensu::Plugin::Metric::CLI::Graphite
-
   option :scheme,
-    :description => "Metric naming scheme, text to prepend to metric",
-    :short => "-s SCHEME",
-    :long => "--scheme SCHEME",
-    :default => "#{Socket.gethostname}.nvidia"
+         description: 'Metric naming scheme, text to prepend to metric',
+         short: '-s SCHEME',
+         long: '--scheme SCHEME',
+         default: "#{Socket.gethostname}.nvidia"
 
   def run
     metrics = {}
@@ -65,10 +64,9 @@ class EntropyGraphite < Sensu::Plugin::Metric::CLI::Graphite
     timestamp = Time.now.to_i
 
     metrics.each do |key, value|
-      output [config[:scheme], key].join("."), value, timestamp
+      output [config[:scheme], key].join('.'), value, timestamp
     end
 
     ok
   end
-
 end

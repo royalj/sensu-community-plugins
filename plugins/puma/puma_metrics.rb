@@ -24,7 +24,7 @@
 #   for details.
 #
 
-#!/usr/bin/env ruby
+# !/usr/bin/env ruby
 #
 # Pull puma metrics
 #
@@ -41,22 +41,21 @@ require 'socket'
 require 'yaml'
 
 class PumaMetrics < Sensu::Plugin::Metric::CLI::Graphite
-
   option :scheme,
-    :description => "Metric naming scheme, text to prepend to metric",
-    :short => "-s SCHEME",
-    :long => "--scheme SCHEME",
-    :default => "#{Socket.gethostname}.puma"
+         description: 'Metric naming scheme, text to prepend to metric',
+         short: '-s SCHEME',
+         long: '--scheme SCHEME',
+         default: "#{Socket.gethostname}.puma"
 
   option :state_file,
-    :description => "Puma state file",
-    :short => "-p STATE_FILE",
-    :long => "--state-file SOCKET",
-    :default => "/tmp/puma.state"
+         description: 'Puma state file',
+         short: '-p STATE_FILE',
+         long: '--state-file SOCKET',
+         default: '/tmp/puma.state'
 
   def puma_options
     @puma_options ||= begin
-      return nil unless File.exists?(config[:state_file])
+      return nil unless File.exist?(config[:state_file])
       YAML.load_file(config[:state_file])['config'].options
     end
   end
@@ -76,5 +75,4 @@ class PumaMetrics < Sensu::Plugin::Metric::CLI::Graphite
     end
     ok
   end
-
 end

@@ -24,7 +24,7 @@
 #   for details.
 #
 
-#!/usr/bin/env ruby
+# !/usr/bin/env ruby
 #
 # Curl HTTP timing metrics
 # ===
@@ -45,25 +45,24 @@ require 'socket'
 require 'sensu-plugin/metric/cli'
 
 class CurlMetrics < Sensu::Plugin::Metric::CLI::Graphite
-
   option :url,
-    :short => '-u URL',
-    :long => '--url URL',
-    :description => 'valid cUrl url to connect',
-    :default => 'http://127.0.0.1:80/'
+         short: '-u URL',
+         long: '--url URL',
+         description: 'valid cUrl url to connect',
+         default: 'http://127.0.0.1:80/'
 
   option :curl_args,
-    :short => '-a "CURL ARGS"',
-    :long => '--curl_args "CURL ARGS"',
-    :description => 'Additional arguments to pass to curl',
-    :default => ''
+         short: '-a "CURL ARGS"',
+         long: '--curl_args "CURL ARGS"',
+         description: 'Additional arguments to pass to curl',
+         default: ''
 
   option :scheme,
-    :description => "Metric naming scheme, text to prepend to metric",
-    :short => "-s SCHEME",
-    :long => "--scheme SCHEME",
-    :required => true,
-    :default => "#{Socket.gethostname}.curl_timings"
+         description: 'Metric naming scheme, text to prepend to metric',
+         short: '-s SCHEME',
+         long: '--scheme SCHEME',
+         required: true,
+         default: "#{Socket.gethostname}.curl_timings"
 
   def run
     cmd = "curl --silent --output /dev/null #{config[:curl_args]} "
@@ -82,5 +81,4 @@ class CurlMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
     ok
   end
-
 end

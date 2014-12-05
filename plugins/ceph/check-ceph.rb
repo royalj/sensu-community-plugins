@@ -42,53 +42,52 @@ require 'sensu-plugin/check/cli'
 require 'timeout'
 
 class CheckCephHealth < Sensu::Plugin::Check::CLI
-
   option :keyring,
-         :description => 'Path to cephx authentication keyring file',
-         :short       => '-k KEY',
-         :long        => '--keyring',
-         :proc        => proc { |k| " -k #{k}" }
+         description: 'Path to cephx authentication keyring file',
+         short: '-k KEY',
+         long: '--keyring',
+         proc: proc { |k| " -k #{k}" }
 
   option :monitor,
-         :description => 'Optional monitor IP',
-         :short       => '-m MON',
-         :long        => '--monitor',
-         :proc        => proc { |m| " -m #{m}" }
+         description: 'Optional monitor IP',
+         short: '-m MON',
+         long: '--monitor',
+         proc: proc { |m| " -m #{m}" }
 
   option :cluster,
-         :description => 'Optional cluster name',
-         :short       => '-c NAME',
-         :long        => '--cluster',
-         :proc        => proc { |c| " --cluster=#{c}" }
+         description: 'Optional cluster name',
+         short: '-c NAME',
+         long: '--cluster',
+         proc: proc { |c| " --cluster=#{c}" }
 
   option :timeout,
-         :description => 'Timeout (default 10)',
-         :short       => '-t SEC',
-         :long        => '--timeout',
+         description: 'Timeout (default 10)',
+         short: '-t SEC',
+         long: '--timeout',
          # #YELLOW
          # don't use blocks (rubocop error)
-         :proc        => proc { |t| t.to_i },
-         :default     => 10
+         proc: proc(&:to_i),
+         default: 10
 
   option :ignore_flags,
-         :description => 'Optional ceph warning flags to ignore',
-         :short       => '-i FLAG[,FLAG]',
-         :long        => '--ignore-flags',
-         :proc        => proc { |f| f.split(',') }
+         description: 'Optional ceph warning flags to ignore',
+         short: '-i FLAG[,FLAG]',
+         long: '--ignore-flags',
+         proc: proc { |f| f.split(',') }
 
   option :show_detail,
-         :description => 'Show ceph health detail on warns/errors (verbose!)',
-         :short       => '-d',
-         :long        => '--detailed',
-         :boolean     => true,
-         :default     => false
+         description: 'Show ceph health detail on warns/errors (verbose!)',
+         short: '-d',
+         long: '--detailed',
+         boolean: true,
+         default: false
 
   option :osd_tree,
-         :description => 'Show OSD tree on warns/errors (verbose!)',
-         :short       => '-o',
-         :long        => '--osd-tree',
-         :boolean     => true,
-         :default     => false
+         description: 'Show OSD tree on warns/errors (verbose!)',
+         short: '-o',
+         long: '--osd-tree',
+         boolean: true,
+         default: false
 
   # #ORANGE
   # complexity to high (rubocop error)
@@ -100,11 +99,11 @@ class CheckCephHealth < Sensu::Plugin::Check::CLI
       cmd += config[:monitor] if config[:monitor]
       # #YELLOW
       # set to single quotes if possible
-      cmd += " 2>&1"
+      cmd += ' 2>&1'
       Timeout.timeout(config[:timeout]) do
         pipe = IO.popen(cmd)
         Process.wait(pipe.pid)
-        status = $?.exitstatus
+        status = $CHILD_STATUS.exitstatus
       end
     rescue Timeout::Error
       begin
@@ -156,5 +155,4 @@ class CheckCephHealth < Sensu::Plugin::Check::CLI
       critical result
     end
   end
-
 end

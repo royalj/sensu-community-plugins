@@ -33,46 +33,46 @@ require 'beanstalk-client'
 
 class CheckBeanstalkStatistic < Sensu::Plugin::Check::CLI
   option :host,
-         :short   => '-H HOST',
-         :default => 'localhost'
+         short: '-H HOST',
+         default: 'localhost'
 
   option :port,
-         :short   => '-p PORT',
-         :default => '11300'
+         short: '-p PORT',
+         default: '11300'
 
   option :tube,
-         :short   => '-t TUBE'
+         short: '-t TUBE'
 
   option :stat,
-         :short   => '-s STAT'
+         short: '-s STAT'
 
   option :crit_high,
-         :short   => '-c CRIT_HIGH_THRESHOLD',
+         short: '-c CRIT_HIGH_THRESHOLD',
          # #YELLOW
          # dont use block (rubocop error)
-         :proc    => proc { |a| a.to_i },
-         :default => false
+         proc: proc(&:to_i),
+         default: false
 
   option :warn_high,
-         :short   => '-w WARN_HIGH_THRESHOLD',
+         short: '-w WARN_HIGH_THRESHOLD',
          # #YELLOW
          # dont use block (rubocop error)
-         :proc    => proc { |a| a.to_i },
-         :default => false
+         proc: proc(&:to_i),
+         default: false
 
   option :crit_low,
-         :short   => '-C CRIT_LOW_THRESHOLD',
+         short: '-C CRIT_LOW_THRESHOLD',
          # #YELLOW
          # dont use block (rubocop error)
-         :proc    => proc { |a| a.to_i },
-         :default => 0
+         proc: proc(&:to_i),
+         default: 0
 
   option :warn_low,
-         :short   => '-W WARN_LOW_THRESHOLD',
+         short: '-W WARN_LOW_THRESHOLD',
          # #YELLOW
          # dont use block (rubocop error)
-         :proc    => proc { |a| a.to_i },
-         :default => 0
+         proc: proc(&:to_i),
+         default: 0
 
   # #ORANGE
   # complexity to high (rubocop error
@@ -81,7 +81,7 @@ class CheckBeanstalkStatistic < Sensu::Plugin::Check::CLI
       beanstalk = Beanstalk::Connection.new(
         "#{config[:host]}:#{config[:port]}"
       )
-    rescue Exception => e
+    rescue => e
       critical "Failed to connect: (#{e})"
     end
 

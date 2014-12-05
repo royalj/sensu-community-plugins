@@ -24,7 +24,7 @@
 #   for details.
 #
 
-#!/usr/bin/env ruby
+# !/usr/bin/env ruby
 # check-ftp.rb
 # ===
 # Uses either net/ftp or optionally double-bag-ftps ruby gem to check for
@@ -41,27 +41,27 @@ require 'net/http'
 
 class CheckFTP < Sensu::Plugin::Check::CLI
   option :host,
-    :short   => '-H HOST',
-    :default => 'localhost'
+         short: '-H HOST',
+         default: 'localhost'
   option :tls,
-    :short   => '-s',
-    :boolean => true,
-    :default => false
+         short: '-s',
+         boolean: true,
+         default: false
   option :noverify,
-    :short   => '-n',
-    :boolean => true,
-    :default => false
+         short: '-n',
+         boolean: true,
+         default: false
   option :user,
-    :short   => '-u',
-    :long    => '--username USER',
-    :default => 'anonymous'
+         short: '-u',
+         long: '--username USER',
+         default: 'anonymous'
   option :pass,
-    :short => '-p',
-    :long  => '--password PASS'
+         short: '-p',
+         long: '--password PASS'
   option :timeout,
-    :short   => '-t SECS',
-    :proc    => proc { |a| a.to_i },
-    :default => 15
+         short: '-t SECS',
+         proc: proc(&:to_i),
+         default: 15
 
   def run
     begin
@@ -73,7 +73,7 @@ class CheckFTP < Sensu::Plugin::Check::CLI
         end
       end
     rescue Timeout::Error
-      critical "Connection timed out"
+      critical 'Connection timed out'
     rescue => e
       critical "Connection error: #{e.message}"
     end
@@ -90,7 +90,7 @@ class CheckFTP < Sensu::Plugin::Check::CLI
     begin
       ftps = DoubleBagFTPS.new
       ftps.ssl_context = DoubleBagFTPS.create_ssl_context(
-        :verify_mode => verify
+        verify_mode: verify
       )
       ftps.connect(config[:host])
       ftps.login(config[:user], config[:pass])

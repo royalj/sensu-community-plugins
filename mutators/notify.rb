@@ -65,6 +65,9 @@ require 'time'
 # e.g.  unless @event['check']['notify']
 #         exit(0)
 #       end
+#
+# NOTES:
+# What happens if Sensu server goes down messages in queue that need to alert don't hit the notification period?
 
 
 event       = JSON.parse(STDIN.read, symbolize_names: true)
@@ -98,7 +101,7 @@ end
 
 
 def overnight?
-  if notify_overnight && @end_time <= @t && @t >= @start_time
+  if @overnight && @end_time <= @t && @t >= @start_time
     true
   else
     raise ArgumentError

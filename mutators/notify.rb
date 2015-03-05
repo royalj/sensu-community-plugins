@@ -93,8 +93,8 @@ def notification_period?
   else
     @notify == false
   end
-  # An overnight notification period will throw an error so we need to catch the error
-  # and check if we want to notify overnight or not.
+  # An overnight notification period (where @end_time < @start_time, e.g. 18:00 - 6:00) will
+  # throw an error so we need to catch the error and check if we want to notify overnight or not.
   rescue ArgumentError
     overnight?  
 end
@@ -129,3 +129,4 @@ end
 
 # output modified event
 puts event.to_json
+exit(0)
